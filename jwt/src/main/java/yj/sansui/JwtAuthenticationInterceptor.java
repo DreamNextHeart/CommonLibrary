@@ -1,11 +1,11 @@
-package yj.sansui.third.jwt;
+package yj.sansui;
 
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import yj.sansui.exception.CommonException;
 import yj.sansui.exception.ExceptionCode;
-import yj.sansui.third.jwt.annotation.PassVerify;
+import yj.sansui.annotation.PassVerify;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

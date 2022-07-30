@@ -1,4 +1,4 @@
-package yj.sansui.third.redis;
+package yj.sansui;
 
 /**
  * RedisConstant，redis的key常量

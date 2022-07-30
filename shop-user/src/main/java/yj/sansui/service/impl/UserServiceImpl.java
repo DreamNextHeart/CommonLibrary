@@ -3,14 +3,14 @@ package yj.sansui.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import yj.sansui.RedisConstant;
+import yj.sansui.RedisUtil;
 import yj.sansui.bean.entity.UserEntity;
 import yj.sansui.exception.CommonException;
 import yj.sansui.exception.ExceptionCode;
 import yj.sansui.mapper.UserMapper;
 import yj.sansui.result.Result;
 import yj.sansui.service.UserService;
-import yj.sansui.third.redis.RedisConstant;
-import yj.sansui.third.redis.RedisUtil;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -63,7 +63,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     public boolean saveUserEntity(UserEntity userEntity){
         if(userService.saveUser(userEntity)){
-            String key=RedisConstant.User_Id_Key+userEntity.getId();
+            String key= RedisConstant.User_Id_Key+userEntity.getId();
             RedisUtil.setKeyValue(key,userEntity);
             return true;
         }else{

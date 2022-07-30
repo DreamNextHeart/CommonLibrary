@@ -1,4 +1,4 @@
-package yj.sansui.third.redis;
+package yj.sansui;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class RedisUtil {
 
     /**
      * setRedisTemplate，注入Bean——RedisTemplate
-     * @param redisTemplate
+     * @param redisTemplate RedisTemplate<String, Object>
      */
     @Resource
     public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {

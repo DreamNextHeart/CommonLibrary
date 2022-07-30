@@ -4,16 +4,15 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import yj.sansui.JwtUtil;
+import yj.sansui.RedisUtil;
+import yj.sansui.annotation.PassVerify;
 import yj.sansui.bean.entity.UserEntity;
 import yj.sansui.exception.CommonException;
 import yj.sansui.exception.ExceptionCode;
 import yj.sansui.pack.NotControllerResponse;
 import yj.sansui.result.Result;
 import yj.sansui.service.impl.UserServiceImpl;
-import yj.sansui.third.jwt.JwtUtil;
-import yj.sansui.third.jwt.annotation.PassVerify;
-
-import yj.sansui.third.redis.RedisUtil;
 
 import javax.annotation.Resource;
 import java.util.List;

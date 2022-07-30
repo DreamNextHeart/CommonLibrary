@@ -1,5 +1,6 @@
 package yj.sansui.service;
 
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import yj.sansui.bean.entity.UserEntity;
 import yj.sansui.result.Result;
@@ -11,7 +12,7 @@ import java.util.List;
  * UserService，定义User业务方法逻辑的方法接口
  * @author Sansui
  */
-public interface UserService  extends IService<UserEntity>{
+public interface UserService  extends IService<UserEntity> {
     /**
      * selectById，输入id，查找userEntity
      * @param id Integer

@@ -1,4 +1,4 @@
-package yj.sansui.third.jwt;
+package yj.sansui;
 
 
 import com.auth0.jwt.JWT;

@@ -10,6 +10,8 @@
     <modules>
         <module>common</module>
         <module>shop-user</module>
+        <module>jwt</module>
+        <module>redis</module>
     </modules>
     <packaging>pom</packaging>
 

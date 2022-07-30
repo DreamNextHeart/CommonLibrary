@@ -1,4 +1,4 @@
-package yj.sansui.third.redis;
+package yj.sansui;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
