@@ -1,1 +1,3 @@
 .idea
+/common/target
+/spring-security/target

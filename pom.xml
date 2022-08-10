@@ -12,6 +12,7 @@
         <module>shop-user</module>
         <module>jwt</module>
         <module>redis</module>
+        <module>spring-security</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -39,6 +40,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
