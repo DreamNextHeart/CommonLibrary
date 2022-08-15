@@ -1,3 +1,4 @@
 .idea
 /common/target
 /spring-security/target
+/shop-user/target
