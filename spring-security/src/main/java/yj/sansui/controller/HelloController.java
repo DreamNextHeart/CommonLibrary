@@ -3,12 +3,11 @@ package yj.sansui.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import yj.sansui.utils.VerifyCodeImage;
+import yj.sansui.result.Result;
+import yj.sansui.service.impl.VerifyServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -16,18 +15,20 @@ import java.io.IOException;
  */
 @RestController
 public class HelloController {
+    private VerifyServiceImpl verifyService;
     @GetMapping("/hello")
     public String hello(){
         return  "hello";
     }
 
-    @GetMapping("/vercode")
-    public void code(HttpServletRequest req, HttpServletResponse resp)throws IOException{
-        VerifyCodeImage vc=new VerifyCodeImage();
-        BufferedImage image= vc.getImage();
-        String text= vc.getText();
-        HttpSession session= req.getSession();
-        session.setAttribute("index_code",text);
-        VerifyCodeImage.output(image,resp.getOutputStream());
+    @GetMapping("/getCode")
+    public void getCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        verifyService.createCode(response, request);
     }
+
+    @GetMapping("/checkCode")
+    public Result checkCode(String code){
+        return verifyService.checkCode(code);
+    }
+
 }

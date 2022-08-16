@@ -78,7 +78,7 @@ public class RedisUtil {
      * @param key String
      * @return true/false
      */
-    public boolean hasKey(String key){
+    public static boolean hasKey(String key){
         try {
             return redisTemplate.hasKey(key);
         }catch(Exception e){
@@ -124,7 +124,7 @@ public class RedisUtil {
      * @param time
      * @return true/false
      */
-    public boolean setKeyValueTime(String key, Object value, long time) {
+    public static boolean setKeyValueTime(String key, Object value, long time) {
         try {
             if (time > 0) {
                 redisTemplate.opsForValue()

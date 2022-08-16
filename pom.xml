@@ -28,6 +28,7 @@
         <lombok.version>1.18.22</lombok.version>
         <pool2.version>2.8.0</pool2.version>
         <jwt.version>3.18.2</jwt.version>
+        <jodah.version>0.5.10</jodah.version>
         <devtools.version>2.3.11.RELEASE</devtools.version>
         <validation.version>2.2.6.RELEASE</validation.version>
         <mybatisplus.version>3.3.0</mybatisplus.version>
@@ -111,6 +112,11 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.jodah</groupId>
+                <artifactId>expiringmap</artifactId>
+                <version>${jodah.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
