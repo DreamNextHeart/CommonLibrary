@@ -13,8 +13,12 @@ import yj.sansui.exception.ExceptionCode;
 import yj.sansui.pack.NotControllerResponse;
 import yj.sansui.result.Result;
 import yj.sansui.service.impl.UserServiceImpl;
+import yj.sansui.utils.VerifyCode;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -205,7 +209,17 @@ public class UserController {
         return userService.selectAllBig();
     }
 
+    @GetMapping("/getCode")
+    @PassVerify
+    public void getCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        VerifyCode.createCode(response, request);
+    }
 
+    @GetMapping("/checkCode")
+    @PassVerify
+    public Result checkCode(String code){
+        return VerifyCode.checkCode(code);
+    }
 
 
 

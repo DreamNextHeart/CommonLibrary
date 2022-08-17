@@ -1,2 +1,12 @@
 server:
   port: 8097
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: Poison0116
+  redis:
+    host: localhost
+    port: 6379

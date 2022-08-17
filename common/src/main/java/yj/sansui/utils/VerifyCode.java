@@ -1,10 +1,24 @@
 package yj.sansui.utils;
 
-import lombok.Data;
 
+
+import lombok.Data;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import yj.sansui.RedisUtil;
+import yj.sansui.result.Result;
+
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.time.Duration;
 import java.util.Random;
 
 
@@ -13,7 +27,7 @@ import java.util.Random;
  *
  * @author Sansui
  */
-public class VerifyUtil {
+public class VerifyCode {
     /**
      * codes,验证码字符集
      * size,验证码字符数量
@@ -57,8 +71,8 @@ public class VerifyUtil {
         private Integer fontSize = 25;
         private boolean tilt = true;
         private Color backgroundColor = Color.LIGHT_GRAY;
-        public VerifyUtil build(){
-            return new VerifyUtil(this);
+        public VerifyCode build(){
+            return new VerifyCode(this);
         }
     }
 
@@ -72,9 +86,9 @@ public class VerifyUtil {
 
     /**
      * 初始化基础参数
-     * @param builder
+     * @param builder Builder
      */
-    private VerifyUtil(Builder builder) {
+    private VerifyCode(Builder builder) {
         size=builder.size;
         lines=builder.lines;
         width=builder.width;
@@ -86,7 +100,7 @@ public class VerifyUtil {
 
     /**
      * getRandomColor,获取随机颜色
-     * @return
+     * @return color
      */
     public Color getRandomColor(){
         Random ran=new Random();
@@ -109,9 +123,9 @@ public class VerifyUtil {
         //获取随机字符
         Random ran=new Random();
         //计算每个字符占的宽度，预留一个字符宽度用于左右边距
-        Integer codeWidth=width/(size+1);
+        int codeWidth=width/(size+1);
         //字符y轴的坐标
-        Integer y=height*3/4;
+        int y=height*3/4;
         for(int i=0;i<size;i++){
             //设置随机颜色
             graphics.setColor(getRandomColor());
@@ -119,7 +133,7 @@ public class VerifyUtil {
             Font font=new Font(null,Font.BOLD+Font.ITALIC,fontSize);
             if(tilt){
                 //随机倾斜一个角度
-                Integer theta=ran.nextInt(45);
+                int theta=ran.nextInt(45);
                 //随机倾斜方向，左/右
                 theta=(ran.nextBoolean()==true)?theta:-theta;
                 //AffineTransform,二维仿射变换的功能,它是一种二维坐标到二维坐标之间的线性变换，保持二维图形的“平直性”和“平行性”
@@ -149,4 +163,51 @@ public class VerifyUtil {
         //返回验证码和图片
         return new Object[]{sb.toString(),image};
     }
+    public static void createCode(HttpServletResponse response, HttpServletRequest request)throws IOException{
+        //获取session
+        HttpSession session = request.getSession();
+        //获得sessionId
+        String id = session.getId();
+        System.out.println();
+        ResponseCookie cookie = ResponseCookie.from("JSESSIONID",id)
+                .secure(true)
+                .domain("")
+                .path("/")
+                .maxAge(Duration.ofHours(1))
+                .sameSite("None")
+                .build();
+
+        //清除之前缓存的图片验证码
+        if (!String.valueOf(request.getSession().getAttribute("SESSION_VERIFY_CODE_"+id)).isEmpty()){
+            String getVerify = String.valueOf(request.getSession().getAttribute("SESSION_VERIFY_CODE_"+id));
+            RedisUtil.del(getVerify);
+            System.out.println("清除成功");
+        }
+
+        //生成图片验证码,用的默认参数
+        Object[] verify = VerifyCode.newBuilder().build().createImage();
+
+        //将验证码存入session
+        session.setAttribute("SESSION_VERIFY_CODE_" + id, verify[0]);
+        //打印验证码
+        System.out.println(verify[0]);
+        //将验证码存入redis
+        RedisUtil.setKeyValueTime((String) verify[0],id,5*60);
+
+        //将图片传给浏览器
+        BufferedImage image = (BufferedImage) verify[1];
+        response.setContentType("image/png");
+        response.setHeader(HttpHeaders.SET_COOKIE,cookie.toString());
+        OutputStream ops = response.getOutputStream();
+        ImageIO.write(image,"png",ops);
+    }
+
+    public static Result checkCode(String verifyCode){
+        if (!RedisUtil.hasKey(verifyCode)){
+            return new Result("验证码错误");
+        }
+        RedisUtil.del(verifyCode);
+        return new Result(200);
+    }
 }
+

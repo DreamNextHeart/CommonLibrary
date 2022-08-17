@@ -1,5 +1,6 @@
 package yj.sansui;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -9,7 +10,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import javax.annotation.Resource;
 
 /**
- * RedisConfig redis配置类，配置key、hashKey、value、hashValue的序列化方式
+ * RedisConfigBySansui redis配置类，配置key、hashKey、value、hashValue的序列化方式
  * @author Sansui
  */
 @Configuration

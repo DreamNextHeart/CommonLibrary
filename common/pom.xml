@@ -11,8 +11,12 @@
 
     <artifactId>common</artifactId>
 
-
     <dependencies>
+        <dependency>
+            <groupId>yj.sansui</groupId>
+            <artifactId>redis</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
