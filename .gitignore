@@ -2,5 +2,7 @@
 /common/target
 /spring-security/target
 /shop-user/target
+/shop-user/src/main/resources/log
 /redis/target
 /jwt/target
+/vue/node_modules

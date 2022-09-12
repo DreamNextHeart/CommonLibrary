@@ -6,6 +6,8 @@ import lombok.Data;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import yj.sansui.RedisUtil;
+import yj.sansui.exception.CommonException;
+import yj.sansui.exception.ExceptionCode;
 import yj.sansui.result.Result;
 
 
@@ -163,6 +165,7 @@ public class VerifyCode {
         //返回验证码和图片
         return new Object[]{sb.toString(),image};
     }
+
     public static void createCode(HttpServletResponse response, HttpServletRequest request)throws IOException{
         //获取session
         HttpSession session = request.getSession();
@@ -202,12 +205,13 @@ public class VerifyCode {
         ImageIO.write(image,"png",ops);
     }
 
-    public static Result checkCode(String verifyCode){
-        if (!RedisUtil.hasKey(verifyCode)){
-            return new Result("验证码错误");
+    public static boolean checkCode(String verifyCode){
+        if (!RedisUtil.hasKey(verifyCode)) {
+            throw  new CommonException(ExceptionCode.CODE_EXCEPTION,"验证码错误");
+        }else {
+            RedisUtil.del(verifyCode);
+            return true;
         }
-        RedisUtil.del(verifyCode);
-        return new Result(200);
     }
 }
 

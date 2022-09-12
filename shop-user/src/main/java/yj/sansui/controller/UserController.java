@@ -2,7 +2,9 @@ package yj.sansui.controller;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import yj.sansui.JwtUtil;
 import yj.sansui.RedisUtil;
@@ -10,6 +12,7 @@ import yj.sansui.annotation.PassVerify;
 import yj.sansui.bean.entity.UserEntity;
 import yj.sansui.exception.CommonException;
 import yj.sansui.exception.ExceptionCode;
+import yj.sansui.mapper.UserMapper;
 import yj.sansui.pack.NotControllerResponse;
 import yj.sansui.result.Result;
 import yj.sansui.service.impl.UserServiceImpl;
@@ -27,6 +30,7 @@ import java.util.List;
  *
  * @author Sansui
  */
+@CrossOrigin
 @RestController
 public class UserController {
 
@@ -208,19 +212,6 @@ public class UserController {
     public List selectAllBig(){
         return userService.selectAllBig();
     }
-
-    @GetMapping("/getCode")
-    @PassVerify
-    public void getCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        VerifyCode.createCode(response, request);
-    }
-
-    @GetMapping("/checkCode")
-    @PassVerify
-    public Result checkCode(String code){
-        return VerifyCode.checkCode(code);
-    }
-
 
 
 }

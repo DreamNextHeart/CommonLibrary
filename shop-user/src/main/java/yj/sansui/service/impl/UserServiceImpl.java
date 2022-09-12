@@ -3,6 +3,7 @@ package yj.sansui.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import yj.sansui.RedisConstant;
 import yj.sansui.RedisUtil;
 import yj.sansui.bean.entity.UserEntity;

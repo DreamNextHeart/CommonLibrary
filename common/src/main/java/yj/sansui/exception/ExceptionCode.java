@@ -27,7 +27,9 @@ public enum ExceptionCode implements StatusCode {
     DELETE_EXCEPTION(306,"删除失败"),
     SAVE_EXCEPTION(307,"保存失败"),
     UPDATE_EXCEPTION(308,"更新失败"),
-    SELECT_EXCEPTION(309,"查询失败");
+    SELECT_EXCEPTION(309,"查询失败"),
+    CODE_EXCEPTION(310,"验证码错误"),
+    USERNAME_EXCEPTION(311,"用户名或密码错误");
 
 
     /**

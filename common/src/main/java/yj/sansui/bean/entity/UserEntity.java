@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 
 /**
- * UserEntity 用户实体类
+ * UserEntity 用户实体类，对应版本1.0.0
  * @author Sansui
  */
 @Data

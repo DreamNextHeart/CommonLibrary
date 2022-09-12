@@ -12,7 +12,9 @@
         <module>shop-user</module>
         <module>jwt</module>
         <module>redis</module>
-        <module>spring-security</module>
+        <module>user</module>
+        <module>vue</module>
+        <module>vue</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -24,6 +26,7 @@
 
     <properties>
         <springboot.version>2.3.7.RELEASE</springboot.version>
+        <sa-token.version>1.31.0</sa-token.version>
         <mysql.version>8.0.28</mysql.version>
         <lombok.version>1.18.22</lombok.version>
         <pool2.version>2.8.0</pool2.version>
@@ -117,6 +120,12 @@
                 <groupId>net.jodah</groupId>
                 <artifactId>expiringmap</artifactId>
                 <version>${jodah.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <version>${sa-token.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
