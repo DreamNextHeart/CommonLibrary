@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <el-form ref="loginForm" :model="loginForm"  class="login-form">
+    <el-form ref="loginForm" :model="loginForm" class="login-form">
       <h3 class="title">CommonLibrary</h3>
       <!-- 输入账号-->
       <el-form-item prop="username">
@@ -41,10 +41,8 @@
       </el-form-item>
 
       <!--  记住密码-->
-      <el-checkbox-group v-model="loginForm.remember">
-        <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-        <el-checkbox label="记住密码"  style="margin:0 0 25px 0;"></el-checkbox>
-      </el-checkbox-group>
+      <el-checkbox v-model="loginForm.remember" label="记住密码" style="margin:0 0 25px 0;"></el-checkbox>
+
 
       <!--  登录、注册按钮-->
       <el-form-item style="width:100%;">
@@ -53,7 +51,7 @@
           size="medium"
           type="primary"
           style="width:100%;"
-          @click.native.prevent="test"
+          @click.native.prevent="handleLogin"
         >
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
@@ -72,17 +70,18 @@
 </template>
 
 <script>
-import { checkCode, getCodeImg, handleLogin } from '@/api/login'
-import { clearCookie, getCookie, setCookie } from '@/assets/login/js/cookie'
+import {checkCode, getCodeImg, handleLogin} from '@/api/login'
+import {clearCookie, getCookie, setCookie} from '@/assets/login/js/cookie'
+
 export default {
   name: 'Login',
-  data () {
+  data() {
     return {
       codeUrl: '',
       loginForm: {
         username: '',
         password: '',
-        remember: [],
+        remember: true,
         code: '',
         uuid: ''
       },
@@ -98,8 +97,8 @@ export default {
     this.getCookie();
   },
   methods: {
-    getCodeImg () {
-      getCodeImg().then(res=>{
+    getCodeImg() {
+      getCodeImg().then(res => {
         console.log(res);
         try {
           this.codeUrl = window.URL.createObjectURL(res.data);
@@ -108,13 +107,13 @@ export default {
         }
       });
     },
-    checkCode(){
-      const code=this.loginForm.code;
+    checkCode() {
+      const code = this.loginForm.code;
       console.log(code);
-      checkCode(code).then(res=>{
-        if(res.data.code!==200){
+      checkCode(code).then(res => {
+        if (res.data.code !== 200) {
           this.$message.error('验证码错误');
-        }else {
+        } else {
 
         }
       })
@@ -123,15 +122,15 @@ export default {
       getCookie(this.loginForm);
     },
     setCookie(day) {
-      setCookie(this.loginForm,day);
+      setCookie(this.loginForm, day);
     },
-    clearCookie(){
+    clearCookie() {
       clearCookie();
     },
-    test(){
+    test() {
       console.log(this.loginForm);
     },
-    handleLogin(){
+    handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
@@ -141,7 +140,7 @@ export default {
             this.clearCookie();
           }
           console.log("来了")
-          handleLogin(this.loginForm).then(res=>{
+          handleLogin(this.loginForm).then(res => {
             console.log(res);
           });
         }

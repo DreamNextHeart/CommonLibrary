@@ -9,8 +9,8 @@ export function setCookie (loginForm, day) {
 export function getCookie (loginForm) {
   loginForm.username = Cookies.get('username')
   loginForm.password = Cookies.get('password')
-  loginForm.remember = Cookies.get('remember')
-  console.log(loginForm)
+  loginForm.remember=Boolean(Cookies.get('remember'))
+  console.log(loginForm.remember)
 }
 
 export function clearCookie () {
