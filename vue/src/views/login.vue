@@ -41,7 +41,10 @@
       </el-form-item>
 
       <!--  记住密码-->
-      <el-checkbox v-model="loginForm.remember"  style="margin:0 0 25px 0;">记住密码</el-checkbox>
+      <el-checkbox-group v-model="loginForm.remember">
+        <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
+        <el-checkbox label="记住密码"  style="margin:0 0 25px 0;"></el-checkbox>
+      </el-checkbox-group>
 
       <!--  登录、注册按钮-->
       <el-form-item style="width:100%;">
@@ -50,7 +53,7 @@
           size="medium"
           type="primary"
           style="width:100%;"
-          @click.native.prevent="handleLogin"
+          @click.native.prevent="test"
         >
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
@@ -79,7 +82,7 @@ export default {
       loginForm: {
         username: '',
         password: '',
-        remember: true,
+        remember: [],
         code: '',
         uuid: ''
       },
@@ -124,6 +127,9 @@ export default {
     },
     clearCookie(){
       clearCookie();
+    },
+    test(){
+      console.log(this.loginForm);
     },
     handleLogin(){
       this.$refs.loginForm.validate(valid => {

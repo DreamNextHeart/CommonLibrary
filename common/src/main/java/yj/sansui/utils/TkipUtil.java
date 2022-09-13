@@ -6,11 +6,16 @@ import java.security.MessageDigest;
 import java.util.Random;
 
 /**
+ * TkipUtil，加密加盐工具类
  * @author sansui
  */
 public class TkipUtil {
 
-    // 加密
+    /**
+     * degst，加密算法
+     * @param str String，接收传入的明文密码
+     * @return 输出密文
+     */
     public static String degst(String str){
         try {
             MessageDigest md5 = MessageDigest.getInstance("md5");
@@ -24,26 +29,21 @@ public class TkipUtil {
         }
     }
 
-    //获取盐值
+    /**
+     * getSalt获取盐值
+     * @return salt 盐值
+     */
     public static String getSalt(){
         String salt="";
+        int saltNumber=5;
         String[] saltStr={"0","1","2","3","4","5","6","7","8","9",
                 "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
                 "A","B","C", "D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-        for(int i=0;i<5;i++) {
+        for(int i=0;i<saltNumber;i++) {
             Random ru=new Random();
             String str=saltStr[ru.nextInt(61)];
-//            System.out.println(str);
             salt+=str;
         }
         return salt;
     }
-
-//    public static void test(){
-//        Random ru=new Random();
-//        for(int i=0;i<5;i++){
-//            int temp=ru.nextInt(10);
-//            System.out.println(temp);
-//        }
-//    }
 }
