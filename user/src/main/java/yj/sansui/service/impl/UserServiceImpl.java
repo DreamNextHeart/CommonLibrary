@@ -1,5 +1,6 @@
 package yj.sansui.service.impl;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -31,7 +32,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper.eq("username",userDTO.getUsername());
         User user=userService.getOne(wrapper);
         if(user == null){
-            throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名或密码错误");
+            throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名："+userDTO.getUsername()+"不存在");
         }else {
             String salt= user.getSalt();
             String password=userDTO.getPassword();
@@ -39,9 +40,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             password= TkipUtil.degst(password);
             if(password.equals(user.getPassword())){
                 StpUtil.login(user.getUsername());
+                SaTokenInfo tokenInfo=StpUtil.getTokenInfo();
+                String token=tokenInfo.getTokenValue();
                 return new Result(200,"登陆成功");
             }else {
-                throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名或密码错误");
+                throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名："+userDTO.getUsername()+"密码错误");
             }
         }
     }

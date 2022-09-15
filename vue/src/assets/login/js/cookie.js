@@ -1,21 +1,26 @@
 import Cookies from 'js-cookie'
+import cookie from "@/assets/globalvariable/cookie";
 
-export function setCookie (loginForm, day) {
-  Cookies.set('username', loginForm.username, { expires: day })
-  Cookies.set('password', loginForm.password, { expires: day })
-  Cookies.set('remember', loginForm.remember, { expires: day })
+export function setCookie (loginForm) {
+  Cookies.set('username', loginForm.username, { expires: cookie.expires })
+  Cookies.set('token', loginForm.token, { expires: cookie.expires })
+  Cookies.set('remember', loginForm.remember, { expires: cookie.expires })
 }
 
 export function getCookie (loginForm) {
   loginForm.username = Cookies.get('username')
-  loginForm.password = Cookies.get('password')
+  loginForm.token = Cookies.get('token')
   loginForm.remember=Boolean(Cookies.get('remember'))
   console.log(loginForm.remember)
 }
 
+export function getCookieRemember(TempForm){
+  TempForm.remember=Boolean(Cookies.get('remember'))
+}
+
 export function clearCookie () {
   Cookies.remove('username')
-  Cookies.remove('password')
+  Cookies.remove('token')
   Cookies.remove('remember')
 }
 

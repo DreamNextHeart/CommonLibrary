@@ -70,8 +70,10 @@
 </template>
 
 <script>
-import {checkCode, getCodeImg, handleLogin} from '@/api/login'
-import {clearCookie, getCookie, setCookie} from '@/assets/login/js/cookie'
+import {checkCode, getCodeImg, handleLogin, loginIn} from '@/api/login'
+import {clearCookie, getCookie, getCookieRemember, setCookie} from '@/assets/login/js/cookie'
+import {getRandomPassword} from "@/assets/login/js/password";
+import cookie from "@/assets/globalvariable/cookie";
 
 export default {
   name: 'Login',
@@ -81,9 +83,13 @@ export default {
       loginForm: {
         username: '',
         password: '',
-        remember: true,
+        remember: false,
         code: '',
+        token: '',
         uuid: ''
+      },
+      TempForm: {
+        remember: false
       },
       loading: false,
       //验证码开关
@@ -93,8 +99,8 @@ export default {
     }
   },
   created() {
+    this.getCookieRemember();
     this.getCodeImg();
-    this.getCookie();
   },
   methods: {
     getCodeImg() {
@@ -107,9 +113,18 @@ export default {
         }
       });
     },
+    getCookieRemember(){
+      getCookieRemember(this.TempForm);
+      if(this.TempForm.remember==true){
+        this.getCookie();
+        this.loginForm.password=getRandomPassword(10);
+        this.captchaEnabled=false;
+      }else {
+
+      }
+    },
     checkCode() {
       const code = this.loginForm.code;
-      console.log(code);
       checkCode(code).then(res => {
         if (res.data.code !== 200) {
           this.$message.error('验证码错误');
@@ -121,27 +136,36 @@ export default {
     getCookie() {
       getCookie(this.loginForm);
     },
-    setCookie(day) {
-      setCookie(this.loginForm, day);
+    setCookie() {
+      setCookie(this.loginForm);
     },
     clearCookie() {
       clearCookie();
-    },
-    test() {
-      console.log(this.loginForm);
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
-          if (this.loginForm.remember) {
-            this.setCookie(30);
-          } else {
-            this.clearCookie();
-          }
-          console.log("来了")
-          handleLogin(this.loginForm).then(res => {
-            console.log(res);
+          // if (this.loginForm.remember) {
+          //   this.setCookie();
+          // } else {
+          //   this.clearCookie();
+          // }
+          loginIn(this.loginForm).then(res => {
+            if (res.data.code == 310) {
+              this.$message.error('验证码错误');
+              this.loading = false;
+              this.loginForm.code='';
+              this.getCodeImg();
+            } else if(res.data.code==311){
+              this.$message.error('用户名或密码错误');
+              this.loading = false;
+              this.loginForm.code='';
+              this.loginForm.password='';
+              this.getCodeImg();
+            }else if(res.data.code==200){
+
+            }
           });
         }
       });

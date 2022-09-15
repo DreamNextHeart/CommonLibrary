@@ -17,8 +17,8 @@ export function checkCode (code) {
   })
 }
 
-// 获取验证码
-export function handleLogin (loginForm) {
+// 登录
+export function loginIn (loginForm) {
   return request({
     url: '/loginIn',
     method: 'post',

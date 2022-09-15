@@ -20,11 +20,11 @@ import java.io.IOException;
 public class UserController {
     @Resource
     public UserService userService;
+
     @GetMapping("/getCode")
     public void getCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
         VerifyCode.createCode(response, request);
     }
-
 
     @PostMapping("/loginIn")
     public Result loginIn(UserDTO userDTO){

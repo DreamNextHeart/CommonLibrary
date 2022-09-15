@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  * @author sansui
  */
 @Data
-@TableName("library_user")
+@TableName("user")
 public class User {
     /**
      * id 用户序号
