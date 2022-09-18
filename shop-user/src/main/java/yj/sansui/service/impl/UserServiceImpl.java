@@ -3,15 +3,14 @@ package yj.sansui.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import yj.sansui.RedisConstant;
-import yj.sansui.RedisUtil;
 import yj.sansui.bean.entity.UserEntity;
 import yj.sansui.exception.CommonException;
 import yj.sansui.exception.ExceptionCode;
 import yj.sansui.mapper.UserMapper;
 import yj.sansui.result.Result;
 import yj.sansui.service.UserService;
+import yj.sansui.version1.RedisConstant;
+import yj.sansui.version1.RedisUtil;
 
 import javax.annotation.Resource;
 import java.util.List;

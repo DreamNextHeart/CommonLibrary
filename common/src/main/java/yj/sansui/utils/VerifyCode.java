@@ -5,10 +5,9 @@ package yj.sansui.utils;
 import lombok.Data;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
-import yj.sansui.RedisUtil;
 import yj.sansui.exception.CommonException;
 import yj.sansui.exception.ExceptionCode;
-import yj.sansui.result.Result;
+import yj.sansui.version2.RedisUtil;
 
 
 import javax.imageio.ImageIO;
@@ -21,8 +20,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.Duration;
+import java.util.Locale;
 import java.util.Random;
-
+import java.lang.*;
 
 /**
  * VerifyUtil 生成图形验证码的工具类
@@ -40,9 +40,9 @@ public class VerifyCode {
      * backgroundColor,验证码图片背景颜色
      */
     private static final char[] CODES = {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+            '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     };
     private Integer size;
     private Integer lines;
@@ -67,7 +67,7 @@ public class VerifyCode {
          * backgroundColor,背景颜色
          */
         private Integer size = 4;
-        private Integer lines = 10;
+        private Integer lines = 5;
         private Integer width = 80;
         private Integer height = 35;
         private Integer fontSize = 25;
@@ -183,7 +183,7 @@ public class VerifyCode {
         //清除之前缓存的图片验证码
         if (!String.valueOf(request.getSession().getAttribute("SESSION_VERIFY_CODE_"+id)).isEmpty()){
             String getVerify = String.valueOf(request.getSession().getAttribute("SESSION_VERIFY_CODE_"+id));
-            RedisUtil.del(getVerify);
+            RedisUtil.deleteString(getVerify);
             System.out.println("清除成功");
         }
 
@@ -194,8 +194,11 @@ public class VerifyCode {
         session.setAttribute("SESSION_VERIFY_CODE_" + id, verify[0]);
         //打印验证码
         System.out.println(verify[0]);
+        String code=(String)verify[0];
+        //全大写
+        code=code.toUpperCase(Locale.ROOT);
         //将验证码存入redis
-        RedisUtil.setKeyValueTime((String) verify[0],id,5*60);
+        RedisUtil.setStringTime(code,id,5*60);
 
         //将图片传给浏览器
         BufferedImage image = (BufferedImage) verify[1];
@@ -206,10 +209,11 @@ public class VerifyCode {
     }
 
     public static boolean checkCode(String verifyCode){
-        if (!RedisUtil.hasKey(verifyCode)) {
+        verifyCode=verifyCode.toUpperCase(Locale.ROOT);
+        if (LibraryUtil.isEmpty(RedisUtil.getString(verifyCode))) {
             throw  new CommonException(ExceptionCode.CODE_EXCEPTION,"验证码错误");
         }else {
-            RedisUtil.del(verifyCode);
+            RedisUtil.deleteString(verifyCode);
             return true;
         }
     }

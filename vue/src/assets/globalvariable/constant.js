@@ -1,3 +1,3 @@
 export default {
-  expires: 7
+  expires: 7,
 }

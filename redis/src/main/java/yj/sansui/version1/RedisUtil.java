@@ -1,4 +1,4 @@
-package yj.sansui;
+package yj.sansui.version1;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Sansui
  */
-@Component
+@Component("RedisUtil1")
 public class RedisUtil {
 
     private static RedisTemplate<String, Object> redisTemplate;

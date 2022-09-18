@@ -29,7 +29,8 @@ public enum ExceptionCode implements StatusCode {
     UPDATE_EXCEPTION(308,"更新失败"),
     SELECT_EXCEPTION(309,"查询失败"),
     CODE_EXCEPTION(310,"验证码错误"),
-    USERNAME_EXCEPTION(311,"用户名或密码错误");
+    USERNAME_EXCEPTION(311,"用户名或密码错误"),
+    TOKEN_OUT_OF_DATE(312,"token已过期");
 
 
     /**

@@ -7,7 +7,10 @@ spring:
     url: jdbc:mysql://localhost:3306/sa-token?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: Poison0116
-
-jwt:
-  expires-time: 30
+sa-token:
+  # 设置7天活跃有效期，自动续签
+  activity-timeout: 604800
+  # 永久
+  timeout: -1
+  token-style: simple-uuid
 

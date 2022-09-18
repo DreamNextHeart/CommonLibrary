@@ -70,10 +70,10 @@
 </template>
 
 <script>
-import {checkCode, getCodeImg, handleLogin, loginIn} from '@/api/login'
+import {checkCode, getCodeImg, loginIn, loginInNotRemember, loginInRemember} from '@/api/login'
 import {clearCookie, getCookie, getCookieRemember, setCookie} from '@/assets/login/js/cookie'
 import {getRandomPassword} from "@/assets/login/js/password";
-import cookie from "@/assets/globalvariable/cookie";
+
 
 export default {
   name: 'Login',
@@ -101,6 +101,7 @@ export default {
   created() {
     this.getCookieRemember();
     this.getCodeImg();
+    console.log(this.TempForm.remember)
   },
   methods: {
     getCodeImg() {
@@ -115,12 +116,10 @@ export default {
     },
     getCookieRemember(){
       getCookieRemember(this.TempForm);
-      if(this.TempForm.remember==true){
+      if(this.TempForm.remember===true){
         this.getCookie();
         this.loginForm.password=getRandomPassword(10);
         this.captchaEnabled=false;
-      }else {
-
       }
     },
     checkCode() {
@@ -129,7 +128,7 @@ export default {
         if (res.data.code !== 200) {
           this.$message.error('验证码错误');
         } else {
-
+          this.clearCookie();
         }
       })
     },
@@ -146,27 +145,44 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
-          // if (this.loginForm.remember) {
-          //   this.setCookie();
-          // } else {
-          //   this.clearCookie();
-          // }
-          loginIn(this.loginForm).then(res => {
-            if (res.data.code == 310) {
-              this.$message.error('验证码错误');
-              this.loading = false;
-              this.loginForm.code='';
-              this.getCodeImg();
-            } else if(res.data.code==311){
-              this.$message.error('用户名或密码错误');
-              this.loading = false;
-              this.loginForm.code='';
-              this.loginForm.password='';
-              this.getCodeImg();
-            }else if(res.data.code==200){
-
-            }
-          });
+          console.log(this.loginForm.remember);
+          console.log(this.TempForm.remember);
+          if(this.TempForm.remember===false){
+            loginInNotRemember(this.loginForm).then(res => {
+              if (res.data.code === 310) {
+                this.$message.error('验证码错误');
+                this.loginForm.code='';
+                this.getCodeImg();
+              } else if(res.data.code===311){
+                this.$message.error('用户名或密码错误');
+                this.loginForm.code='';
+                this.loginForm.password='';
+                this.getCodeImg();
+              }else if(res.data.code===200){
+                this.$message.success('登陆成功，正在跳转');
+                this.loginForm.token=res.data.data.token;
+                this.setCookie();
+              }
+            });
+          }else {
+            console.log("来了")
+            loginInRemember(this.loginForm).then(res=>{
+              if(res.data.code===200){
+                this.$message.success('登陆成功，正在跳转');
+              }else {
+                this.$message.error('用户信息已过期，请重新登录');
+                this.loginForm.code='';
+                this.loginForm.username='';
+                this.loginForm.password='';
+                this.loginForm.remember=false;
+                this.TempForm.remember=false;
+                this.captchaEnabled=true;
+                this.clearCookie();
+                this.getCodeImg();
+              }
+            })
+          }
+          this.loading = false;
         }
       });
     }

@@ -17,14 +17,22 @@ export function checkCode (code) {
   })
 }
 
-// 登录
-export function loginIn (loginForm) {
+// 登录不记住密码
+export function loginInNotRemember (loginForm) {
   return request({
-    url: '/loginIn',
+    url: '/loginInNotRemember',
     method: 'post',
     params: loginForm
   })
+}
 
+// 登录记住密码
+export function loginInRemember (loginForm) {
+  return request({
+    url: '/loginInRemember',
+    method: 'post',
+    params: loginForm
+  })
 }
 
 

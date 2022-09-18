@@ -1,4 +1,4 @@
-package yj.sansui;
+package yj.sansui.version1;
 
 
 import org.springframework.context.annotation.Bean;

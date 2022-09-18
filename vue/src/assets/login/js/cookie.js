@@ -1,10 +1,14 @@
 import Cookies from 'js-cookie'
-import cookie from "@/assets/globalvariable/cookie";
+import constant from "@/assets/globalvariable/constant";
 
 export function setCookie (loginForm) {
-  Cookies.set('username', loginForm.username, { expires: cookie.expires })
-  Cookies.set('token', loginForm.token, { expires: cookie.expires })
-  Cookies.set('remember', loginForm.remember, { expires: cookie.expires })
+  if(loginForm.remember===true){
+    Cookies.set('username', loginForm.username, { expires: constant.expires })
+    Cookies.set('token', loginForm.token, { expires: constant.expires })
+    Cookies.set('remember', loginForm.remember, { expires: constant.expires })
+  }else {
+    Cookies.set('token', loginForm.token, { expires: constant.expires })
+  }
 }
 
 export function getCookie (loginForm) {
@@ -14,13 +18,14 @@ export function getCookie (loginForm) {
   console.log(loginForm.remember)
 }
 
+
 export function getCookieRemember(TempForm){
   TempForm.remember=Boolean(Cookies.get('remember'))
 }
 
 export function clearCookie () {
-  Cookies.remove('username')
-  Cookies.remove('token')
-  Cookies.remove('remember')
+    Cookies.remove('username')
+    Cookies.remove('token')
+    Cookies.remove('remember')
 }
 
