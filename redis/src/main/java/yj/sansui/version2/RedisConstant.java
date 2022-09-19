@@ -8,9 +8,6 @@ public class RedisConstant {
     /** time是作为时间常量 */
     public static long time= 2592000;
 
-    public static String All_User_Key = "allUser";
-    public static String User_Id_Key = "id: ";
-    public static String USER_KEY_USERNAME = "username: ";
     public static String LAST_ACTIVITY="satoken:login:last-activity:";
     public static String SESSION="satoken:login:session:";
 

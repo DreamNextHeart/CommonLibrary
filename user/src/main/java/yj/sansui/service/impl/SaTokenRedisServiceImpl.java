@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * SaTokenRedisServiceImpl，Redis的操作
  * @author sansui
  */
 @Service
@@ -112,9 +113,10 @@ public class SaTokenRedisServiceImpl implements SaTokenDao {
      */
     @Override
     public void updateTimeout(String key, long timeout) {
-
+        RedisUtil.updateObjectTimeout(key,timeout);
     }
 
+    //----------------Object 操作
     /**
      * 获取Object，如无返空
      *

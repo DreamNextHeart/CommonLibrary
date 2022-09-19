@@ -17,9 +17,9 @@ import java.util.regex.Pattern;
 
 
 /**
- * Sa-Token 内部工具类
+ * Library 内部工具类
  *
- * @author kong
+ * @author sansui
  *
  */
 public class LibraryUtil {

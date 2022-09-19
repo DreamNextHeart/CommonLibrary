@@ -25,7 +25,7 @@ public class CommonException extends RuntimeException {
      * @param message    String
      */
     public CommonException(StatusCode statusCode, String message) {
-        // message用于用户设置抛出错误详情，例如：当前价格-5，小于0
+        // message用于用户设置抛出错误详情，例如：当前价格-5，小于0，给开发人员看的
         super(message);
         // 异常码
         this.code = statusCode.getCode();

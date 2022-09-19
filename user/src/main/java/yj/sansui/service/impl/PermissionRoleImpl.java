@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * PermissionRoleImpl，获取权限角色列表
  * @author sansui
  */
 @Service

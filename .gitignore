@@ -1,8 +1,10 @@
 .idea
-/common/target
-/spring-security/target
-/shop-user/target
 /shop-user/src/main/resources/log
-/redis/target
-/jwt/target
 /vue/node_modules
+
+#各模块的target无需提交推送
+/common/target
+/jwt/target
+/redis/target
+/shop-user/target
+/user/target

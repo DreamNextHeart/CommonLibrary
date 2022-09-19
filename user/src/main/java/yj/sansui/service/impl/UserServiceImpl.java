@@ -35,7 +35,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * loginIn，登录方法
      * @param userDTO UserDTO
-     * @return 验证码正确/不正确，用户不存在/存在，
+     * @return 验证码正确/不正确，用户不存在/存在，用户名，token，权限/角色
      */
     @Override
     public Map<String,Object> loginInNotRemember(UserDTO userDTO) {
@@ -45,7 +45,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper wrapper=new QueryWrapper();
         wrapper.eq("username",userDTO.getUsername());
         User user=userService.getOne(wrapper);
+
         if(LibraryUtil.isEmpty(user)){
+            //不存在该用户
             throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名："+userDTO.getUsername()+"不存在");
         }else {
             //获取盐值
@@ -58,14 +60,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             if(LibraryUtil.equals(password,user.getPassword())){
                 //用户登录
                 StpUtil.login(user.getUsername());
+                //获取token
                 String token=StpUtil.getTokenValue();
-                List<String> list=StpUtil.getPermissionList();
-                Map<String,Object> map=new HashMap<>(3);
+                //获取权限
+                List<String> permissionList=StpUtil.getPermissionList();
+                //获取角色
+                List<String> roleList=StpUtil.getRoleList();
+                Map<String,Object> map=new HashMap<>(4);
                 map.put("user",userDTO.getUsername());
                 map.put("token",token);
-                map.put("permission",list);
+                map.put("permission",permissionList);
+                map.put("role",roleList);
                 return map;
             }else {
+                //密码错误
                 throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名："+userDTO.getUsername()+"密码错误");
             }
         }
@@ -81,6 +89,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Result loginInRemember(UserDTO userDTO) {
         String username=userDTO.getUsername();
         String token=userDTO.getToken();
+        //验证username和token是否存在
         if(RedisUtil.hasStringKey(RedisConstant.SESSION+username)&&RedisUtil.hasStringKey(RedisConstant.LAST_ACTIVITY+token)){
             return new Result("验证通过");
         }else {

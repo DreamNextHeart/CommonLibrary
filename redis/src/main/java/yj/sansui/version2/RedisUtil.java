@@ -49,9 +49,12 @@ public class RedisUtil {
      */
     public boolean isInit;
 
+    /**
+     * init,初始化
+     * @param connectionFactory
+     */
     @Autowired
     public void init(RedisConnectionFactory connectionFactory) {
-
         final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
         final String DATE_PATTERN = "yyyy-MM-dd";
         final String TIME_PATTERN = "HH:mm:ss";
@@ -131,7 +134,7 @@ public class RedisUtil {
 //--------------------Object
 
     /**
-     * getByKey，根据key获取value
+     * getObject，根据key获取value
      *
      * @param key String
      * @return null/value
@@ -141,10 +144,10 @@ public class RedisUtil {
     }
 
     /**
-     * setKeyValueTime，设置key，value和对应过期时间
+     * setObject，设置key，value，时间默认为-1
      *
-     * @param key
-     * @param value
+     * @param key String
+     * @param value Object
      * @return true/false
      */
     public static boolean setObject(String key, Object value) {
@@ -158,7 +161,7 @@ public class RedisUtil {
     }
 
     /**
-     * setKeyValueTime，设置key，value和对应过期时间
+     * setObjectTime，设置key，value和对应过期时间
      *
      * @param key
      * @param value

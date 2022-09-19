@@ -145,8 +145,6 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
-          console.log(this.loginForm.remember);
-          console.log(this.TempForm.remember);
           if(this.TempForm.remember===false){
             loginInNotRemember(this.loginForm).then(res => {
               if (res.data.code === 310) {
@@ -165,7 +163,6 @@ export default {
               }
             });
           }else {
-            console.log("来了")
             loginInRemember(this.loginForm).then(res=>{
               if(res.data.code===200){
                 this.$message.success('登陆成功，正在跳转');
