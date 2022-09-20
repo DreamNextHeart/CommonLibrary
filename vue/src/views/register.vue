@@ -2,13 +2,35 @@
   <div class="register">
     <el-form ref="registerForm" :model="registerForm" class="register-form">
       <h3 class="title">CommonLibrary</h3>
-      <!-- 输入账号-->
-      <el-form-item prop="username">
+      <!-- 输入用户名（nickname，假用户名）-->
+      <el-form-item prop="nickname">
         <el-input
-          v-model="registerForm.username"
+          v-model="registerForm.nickname"
           type="text"
           auto-complete="off"
-          placeholder="账号"
+          placeholder="用户名"
+        >
+        </el-input>
+      </el-form-item>
+
+      <!-- 输入手机号码（用户登陆账号，真用户名）-->
+      <el-form-item prop="phone">
+        <el-input
+          v-model="registerForm.phone"
+          type="text"
+          auto-complete="off"
+          placeholder="手机号码"
+        >
+        </el-input>
+      </el-form-item>
+
+      <!--  输入邮箱-->
+      <el-form-item prop="email">
+        <el-input
+          v-model="registerForm.email"
+          type="text"
+          auto-complete="off"
+          placeholder="邮箱"
         >
         </el-input>
       </el-form-item>
@@ -20,31 +42,41 @@
           type="password"
           auto-complete="off"
           placeholder="密码"
-          @keyup.enter.native="handleregister"
         >
         </el-input>
       </el-form-item>
 
-      <!--  验证码-->
-      <el-form-item prop="code" v-if="captchaEnabled">
+      <!--  输入确认密码-->
+      <el-form-item prop="password">
         <el-input
-          v-model="registerForm.code"
+          v-model="registerForm.currentPassword"
+          type="password"
           auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%"
-          @keyup.enter.native="handleregister"
+          placeholder="确认密码"
         >
         </el-input>
-        <div class="register-code">
-          <img :src="codeUrl" @click="getCodeImg" class="register-code-img"/>
-        </div>
       </el-form-item>
 
-      <!--  记住密码-->
-      <el-checkbox v-model="registerForm.remember" label="记住密码" style="margin:0 0 25px 0;"></el-checkbox>
+<!--      &lt;!&ndash;  验证码&ndash;&gt;-->
+<!--      <el-form-item prop="code" v-if="captchaEnabled">-->
+<!--        <el-input-->
+<!--          v-model="registerForm.code"-->
+<!--          auto-complete="off"-->
+<!--          placeholder="验证码"-->
+<!--          style="width: 63%"-->
+<!--          @keyup.enter.native="handleregister"-->
+<!--        >-->
+<!--        </el-input>-->
+<!--        <div class="register-code">-->
+<!--          <img :src="codeUrl" @click="getCodeImg" class="register-code-img"/>-->
+<!--        </div>-->
+<!--      </el-form-item>-->
+
+<!--      &lt;!&ndash;  记住密码&ndash;&gt;-->
+<!--      <el-checkbox v-model="registerForm.remember" label="记住密码" style="margin:0 0 25px 0;"></el-checkbox>-->
 
 
-      <!--  登录、注册按钮-->
+      <!--  注册按钮-->
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
