@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <el-form ref="loginForm" :model="loginForm" class="login-form">
+    <el-form ref="loginForm" :rules="loginRules" :model="loginForm" class="login-form">
       <h3 class="title">CommonLibrary</h3>
       <!-- 输入账号-->
       <el-form-item prop="username">
@@ -64,7 +64,7 @@
 
     <!--底部-->
     <div class="el-login-footer">
-      <span>Copyright © 2022-2022 CommonLibrary.</span>
+      <span>Copyright © 2022 CommonLibrary.</span>
     </div>
   </div>
 </template>
@@ -91,6 +91,17 @@ export default {
       TempForm: {
         remember: false
       },
+      loginRules: {
+        username: [
+          {require: true, trigger: 'blur', message: "请输入你的账号"},
+          {max: 11,min: 11,message: "请输入11位的手机号码",trigger: 'blur'},
+        ],
+        password: [
+          {require: true, trigger: 'blur', message: "请输入你的密码"},
+          {pattern: /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$)([^\u4e00-\u9fa5\s]){6,20}$/,
+            required: true, message: "密码6~20位，并且字母、数字和标点符号至少包含两种", trigger: "blur"}
+        ]
+      },
       loading: false,
       //验证码开关
       captchaEnabled: true,
@@ -114,12 +125,12 @@ export default {
         }
       });
     },
-    getCookieRemember(){
+    getCookieRemember() {
       getCookieRemember(this.TempForm);
-      if(this.TempForm.remember===true){
+      if (this.TempForm.remember === true) {
         this.getCookie();
-        this.loginForm.password=getRandomPassword(10);
-        this.captchaEnabled=false;
+        this.loginForm.password = getRandomPassword(10);
+        this.captchaEnabled = false;
       }
     },
     checkCode() {
@@ -145,35 +156,35 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
-          if(this.TempForm.remember===false){
+          if (this.TempForm.remember === false) {
             loginInNotRemember(this.loginForm).then(res => {
               if (res.data.code === 310) {
                 this.$message.error('验证码错误');
-                this.loginForm.code='';
+                this.loginForm.code = '';
                 this.getCodeImg();
-              } else if(res.data.code===311){
+              } else if (res.data.code === 311) {
                 this.$message.error('用户名或密码错误');
-                this.loginForm.code='';
-                this.loginForm.password='';
+                this.loginForm.code = '';
+                this.loginForm.password = '';
                 this.getCodeImg();
-              }else if(res.data.code===200){
+              } else if (res.data.code === 200) {
                 this.$message.success('登陆成功，正在跳转');
-                this.loginForm.token=res.data.data.token;
+                this.loginForm.token = res.data.data.token;
                 this.setCookie();
               }
             });
-          }else {
-            loginInRemember(this.loginForm).then(res=>{
-              if(res.data.code===200){
+          } else {
+            loginInRemember(this.loginForm).then(res => {
+              if (res.data.code === 200) {
                 this.$message.success('登陆成功，正在跳转');
-              }else {
+              } else {
                 this.$message.error('用户信息已过期，请重新登录');
-                this.loginForm.code='';
-                this.loginForm.username='';
-                this.loginForm.password='';
-                this.loginForm.remember=false;
-                this.TempForm.remember=false;
-                this.captchaEnabled=true;
+                this.loginForm.code = '';
+                this.loginForm.username = '';
+                this.loginForm.password = '';
+                this.loginForm.remember = false;
+                this.TempForm.remember = false;
+                this.captchaEnabled = true;
                 this.clearCookie();
                 this.getCodeImg();
               }

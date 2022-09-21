@@ -85,18 +85,18 @@
           style="width:100%;"
           @click.native.prevent="handleregister"
         >
-          <span v-if="!loading">登 录</span>
-          <span v-else>登 录 中...</span>
+          <span v-if="!loading">注 册</span>
+          <span v-else>注 册 中...</span>
         </el-button>
-        <div style="float: right;" v-if="register">
-          <router-link class="link-type" :to="'/register'">立即注册</router-link>
-        </div>
+<!--        <div style="float: right;" v-if="register">-->
+<!--          <router-link class="link-type" :to="'/register'">立即注册</router-link>-->
+<!--        </div>-->
       </el-form-item>
     </el-form>
 
     <!--底部-->
     <div class="el-register-footer">
-      <span>Copyright © 2022-2022 CommonLibrary.</span>
+      <span>Copyright © 2022 CommonLibrary.</span>
     </div>
   </div>
 </template>
@@ -108,9 +108,10 @@ export default {
     return {
       codeUrl: '',
       registerForm: {
-        username: '',
+        nickname: '',
+        phone: '',
         password: '',
-        remember: false,
+        currentPassword: '',
         code: '',
         token: '',
         uuid: ''
