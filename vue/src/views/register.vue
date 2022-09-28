@@ -47,7 +47,7 @@
       </el-form-item>
 
       <!--  输入确认密码-->
-      <el-form-item prop="password">
+      <el-form-item prop="currentPassword">
         <el-input
           v-model="registerForm.currentPassword"
           type="password"
@@ -57,25 +57,6 @@
         </el-input>
       </el-form-item>
 
-<!--      &lt;!&ndash;  验证码&ndash;&gt;-->
-<!--      <el-form-item prop="code" v-if="captchaEnabled">-->
-<!--        <el-input-->
-<!--          v-model="registerForm.code"-->
-<!--          auto-complete="off"-->
-<!--          placeholder="验证码"-->
-<!--          style="width: 63%"-->
-<!--          @keyup.enter.native="handleregister"-->
-<!--        >-->
-<!--        </el-input>-->
-<!--        <div class="register-code">-->
-<!--          <img :src="codeUrl" @click="getCodeImg" class="register-code-img"/>-->
-<!--        </div>-->
-<!--      </el-form-item>-->
-
-<!--      &lt;!&ndash;  记住密码&ndash;&gt;-->
-<!--      <el-checkbox v-model="registerForm.remember" label="记住密码" style="margin:0 0 25px 0;"></el-checkbox>-->
-
-
       <!--  注册按钮-->
       <el-form-item style="width:100%;">
         <el-button
@@ -83,7 +64,7 @@
           size="medium"
           type="primary"
           style="width:100%;"
-          @click.native.prevent="handleregister"
+          @click.native.prevent="handleRegister"
         >
           <span v-if="!loading">注 册</span>
           <span v-else>注 册 中...</span>
@@ -102,9 +83,21 @@
 </template>
 
 <script>
+import {register} from "@/api/register";
+
 export default {
   name: "register",
   data() {
+    //currentPWDCheck该回调函数是为了检验确认密码和密码是否一致
+    const currentPWDCheck = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.registerForm.password) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
     return {
       codeUrl: '',
       registerForm: {
@@ -121,32 +114,45 @@ export default {
       login: true,
       loginRules: {
         username: [
-          {required: true, trigger: 'blur', message: "请输入你的用户名"},
+          {required: true, trigger: 'blur', message: "请输入用户名"},
         ],
         phone: [
-          {required: true, trigger: 'blur', message: "请输入你的手机号码"},
+          {required: true, trigger: 'blur', message: "请输入手机号码"},
           {required: true,max: 11,min: 11,message: "请输入11位的手机号码",trigger: 'blur'},
         ],
         email: [
-          {required: true, trigger: 'blur', message: "请输入你的邮箱"},
+          {required: true, trigger: 'blur', message: "请输入邮箱"},
           {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
             required: true, message: "请输入正确的邮箱地址", trigger: "blur"}
         ],
         password: [
-          {required: true, trigger: 'blur', message: "请输入你的密码"},
+          {required: true, trigger: 'blur', message: "请输入密码"},
           {pattern: /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$)([^\u4e00-\u9fa5\s]){6,20}$/,
             required: true, message: "密码6~20位，并且字母、数字和标点符号至少包含两种", trigger: "blur"}
+        ],
+        currentPassword:[
+          {required: true, trigger: 'blur', message: "请输入确认密码"},
+          {pattern: /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$)([^\u4e00-\u9fa5\s]){6,20}$/,
+            required: true, message: "密码6~20位，并且字母、数字和标点符号至少包含两种", trigger: "blur"},
+          {required: true, trigger: 'blur',validator: currentPWDCheck}
         ]
       },
-    }
+    };
+
   },
   created() {
   },
   methods:{
-    currentPWDCheck(){
-      if(this.registerForm.password===this.registerForm.currentPassword){
-        true
-      }
+    handleRegister(){
+      this.$refs.registerForm.validate(valid => {
+        if(valid===false){
+          this.$message.error('请按照提示输入');
+        }else {
+          register(this.registerForm).then(res=>{
+            console.log(res);
+          })
+        }
+      })
     }
   }
 }

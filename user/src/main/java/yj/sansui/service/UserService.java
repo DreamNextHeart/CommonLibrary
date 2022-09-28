@@ -28,10 +28,10 @@ public interface UserService extends IService<User> {
 
     /**
      * register，注册服务
-     * @param user
+     * @param userDTO
      * @return
      */
-    Result register(User user);
+    Result register(UserDTO userDTO);
 
 
 

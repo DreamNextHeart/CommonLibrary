@@ -1,10 +1,16 @@
 package yj.sansui.bean.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,17 +20,21 @@ import javax.validation.constraints.Size;
  * @author sansui
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("user")
 public class User {
     /**
      * id 用户序号
      * username 用户名
+     * phone 手机号码
      * password 密码
      * salt 盐值
      * role 角色
      * department 部门
      */
-    @TableId
+    @TableId(value ="id",type= IdType.AUTO)
     private Integer id;
 
     @NotNull(message = "用户名不允许为空")
