@@ -1,6 +1,6 @@
 package yj.sansui.service.impl;
 
-import cn.dev33.satoken.session.SaSession;
+
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -43,12 +43,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         VerifyCode.checkCode(userDTO.getCode());
         //确认数据库存在该用户
         QueryWrapper wrapper=new QueryWrapper();
-        wrapper.eq("username",userDTO.getUsername());
+        wrapper.eq("phone",userDTO.getPhone());
         User user=userService.getOne(wrapper);
 
         if(LibraryUtil.isEmpty(user)){
             //不存在该用户
-            throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名："+userDTO.getUsername()+"不存在");
+            throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名："+userDTO.getPhone()+"不存在");
         }else {
             //获取盐值
             String salt= user.getSalt();
@@ -59,7 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             //密码验证是否相等
             if(LibraryUtil.equals(password,user.getPassword())){
                 //用户登录
-                StpUtil.login(user.getUsername());
+                StpUtil.login(user.getPhone());
                 //获取token
                 String token=StpUtil.getTokenValue();
                 //获取权限
@@ -67,14 +67,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 //获取角色
                 List<String> roleList=StpUtil.getRoleList();
                 Map<String,Object> map=new HashMap<>(4);
-                map.put("user",userDTO.getUsername());
+                map.put("user",userDTO.getPhone());
                 map.put("token",token);
                 map.put("permission",permissionList);
                 map.put("role",roleList);
                 return map;
             }else {
                 //密码错误
-                throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名："+userDTO.getUsername()+"密码错误");
+                throw new CommonException(ExceptionCode.USERNAME_EXCEPTION,"用户名："+userDTO.getPhone()+"密码错误");
             }
         }
     }
@@ -87,10 +87,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public Result loginInRemember(UserDTO userDTO) {
-        String username=userDTO.getUsername();
+        String phone=userDTO.getPhone();
         String token=userDTO.getToken();
-        //验证username和token是否存在
-        if(RedisUtil.hasStringKey(RedisConstant.SESSION+username)&&RedisUtil.hasStringKey(RedisConstant.LAST_ACTIVITY+token)){
+        //验证phone和token是否存在
+        if(RedisUtil.hasStringKey(RedisConstant.SESSION+phone)&&RedisUtil.hasStringKey(RedisConstant.LAST_ACTIVITY+token)){
             return new Result("验证通过");
         }else {
             throw  new CommonException(ExceptionCode.TOKEN_OUT_OF_DATE,"token已过期，请重新登录");

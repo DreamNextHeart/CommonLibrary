@@ -1,11 +1,11 @@
 <template>
   <div class="register">
-    <el-form ref="registerForm" :model="registerForm" class="register-form">
+    <el-form ref="registerForm" :rules="loginRules" :model="registerForm" class="register-form">
       <h3 class="title">CommonLibrary</h3>
-      <!-- 输入用户名（nickname，假用户名）-->
-      <el-form-item prop="nickname">
+      <!-- 输入用户名-->
+      <el-form-item prop="username">
         <el-input
-          v-model="registerForm.nickname"
+          v-model="registerForm.username"
           type="text"
           auto-complete="off"
           placeholder="用户名"
@@ -13,7 +13,7 @@
         </el-input>
       </el-form-item>
 
-      <!-- 输入手机号码（用户登陆账号，真用户名）-->
+      <!-- 输入手机号码-->
       <el-form-item prop="phone">
         <el-input
           v-model="registerForm.phone"
@@ -88,9 +88,9 @@
           <span v-if="!loading">注 册</span>
           <span v-else>注 册 中...</span>
         </el-button>
-<!--        <div style="float: right;" v-if="register">-->
-<!--          <router-link class="link-type" :to="'/register'">立即注册</router-link>-->
-<!--        </div>-->
+        <div style="float: right;" v-if="login">
+          <router-link class="link-type" :to="'/'">已有账号？立即登录</router-link>
+        </div>
       </el-form-item>
     </el-form>
 
@@ -108,22 +108,45 @@ export default {
     return {
       codeUrl: '',
       registerForm: {
-        nickname: '',
+        username: '',
         phone: '',
+        email: '',
         password: '',
         currentPassword: '',
-        code: '',
         token: '',
         uuid: ''
       },
-      TempForm: {
-        remember: false
-      },
       loading: false,
-      //验证码开关
-      captchaEnabled: true,
       //注册开关
-      register: false
+      login: true,
+      loginRules: {
+        username: [
+          {required: true, trigger: 'blur', message: "请输入你的用户名"},
+        ],
+        phone: [
+          {required: true, trigger: 'blur', message: "请输入你的手机号码"},
+          {required: true,max: 11,min: 11,message: "请输入11位的手机号码",trigger: 'blur'},
+        ],
+        email: [
+          {required: true, trigger: 'blur', message: "请输入你的邮箱"},
+          {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+            required: true, message: "请输入正确的邮箱地址", trigger: "blur"}
+        ],
+        password: [
+          {required: true, trigger: 'blur', message: "请输入你的密码"},
+          {pattern: /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$)([^\u4e00-\u9fa5\s]){6,20}$/,
+            required: true, message: "密码6~20位，并且字母、数字和标点符号至少包含两种", trigger: "blur"}
+        ]
+      },
+    }
+  },
+  created() {
+  },
+  methods:{
+    currentPWDCheck(){
+      if(this.registerForm.password===this.registerForm.currentPassword){
+        true
+      }
     }
   }
 }

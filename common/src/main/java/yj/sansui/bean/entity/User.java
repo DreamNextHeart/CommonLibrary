@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * User，用户实体类
@@ -28,6 +29,9 @@ public class User {
 
     @NotNull(message = "用户名不允许为空")
     private String username;
+
+    @Size(min = 11,max = 11,message = "请输入11位手机号码")
+    private String phone;
 
     @NotNull(message = "密码不允许为空")
     private String password;

@@ -3,7 +3,7 @@ import constant from "@/assets/globalvariable/constant";
 
 export function setCookie (loginForm) {
   if(loginForm.remember===true){
-    Cookies.set('username', loginForm.username, { expires: constant.expires })
+    Cookies.set('phone', loginForm.phone, { expires: constant.expires })
     Cookies.set('token', loginForm.token, { expires: constant.expires })
     Cookies.set('remember', loginForm.remember, { expires: constant.expires })
   }else {
@@ -12,7 +12,7 @@ export function setCookie (loginForm) {
 }
 
 export function getCookie (loginForm) {
-  loginForm.username = Cookies.get('username')
+  loginForm.phone = Cookies.get('phone')
   loginForm.token = Cookies.get('token')
   loginForm.remember=Boolean(Cookies.get('remember'))
   console.log(loginForm.remember)
@@ -24,7 +24,7 @@ export function getCookieRemember(TempForm){
 }
 
 export function clearCookie () {
-    Cookies.remove('username')
+    Cookies.remove('phone')
     Cookies.remove('token')
     Cookies.remove('remember')
 }

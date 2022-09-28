@@ -3,12 +3,12 @@
     <el-form ref="loginForm" :rules="loginRules" :model="loginForm" class="login-form">
       <h3 class="title">CommonLibrary</h3>
       <!-- 输入账号-->
-      <el-form-item prop="username">
+      <el-form-item prop="phone">
         <el-input
-          v-model="loginForm.username"
+          v-model="loginForm.phone"
           type="text"
           auto-complete="off"
-          placeholder="账号"
+          placeholder="手机号码"
         >
         </el-input>
       </el-form-item>
@@ -57,7 +57,7 @@
           <span v-else>登 录 中...</span>
         </el-button>
         <div style="float: right;" v-if="register">
-          <router-link class="link-type" :to="'/register'">立即注册</router-link>
+          <router-link class="link-type" :to="'/register'">没有账号？立即注册</router-link>
         </div>
       </el-form-item>
     </el-form>
@@ -82,6 +82,7 @@ export default {
       codeUrl: '',
       loginForm: {
         username: '',
+        phone: '',
         password: '',
         remember: false,
         code: '',
@@ -92,9 +93,9 @@ export default {
         remember: false
       },
       loginRules: {
-        username: [
-          {require: true, trigger: 'blur', message: "请输入你的账号"},
-          {max: 11,min: 11,message: "请输入11位的手机号码",trigger: 'blur'},
+        phone: [
+          {required: true, trigger: 'blur', message: "请输入你的手机号码"},
+          {required: true,max: 11,min: 11,message: "请输入11位的手机号码",trigger: 'blur'},
         ],
         password: [
           {require: true, trigger: 'blur', message: "请输入你的密码"},
@@ -106,7 +107,7 @@ export default {
       //验证码开关
       captchaEnabled: true,
       //注册开关
-      register: false
+      register: true
     }
   },
   created() {
