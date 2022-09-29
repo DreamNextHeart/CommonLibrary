@@ -149,7 +149,11 @@ export default {
           this.$message.error('请按照提示输入');
         }else {
           register(this.registerForm).then(res=>{
-            console.log(res);
+            if(res.data.code===200){
+              this.$message.success('注册成功，请到邮箱激活账号');
+            }else {
+              this.$message.error('注册失败，请重新注册，若存在多次注册失败请联系管理员');
+            }
           })
         }
       })

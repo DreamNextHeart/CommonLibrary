@@ -116,11 +116,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .username(userDTO.getUsername())
                 .phone(userDTO.getPhone())
                 .password(userDTO.getPassword())
+                .email(userDTO.getEmail())
                 .salt(salt)
                 .build();
-        System.out.println(user.getId());
-        userService.save(user);
-        return new Result(200, "注册成功");
+        if(userService.save(user)){
+            return new Result(200, "注册成功");
+        }else {
+            throw new CommonException(ExceptionCode.REGISTER_ERROR,"手机号码："+userDTO.getPhone()+"注册失败");
+        }
     }
 
 
