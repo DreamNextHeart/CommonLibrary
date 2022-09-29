@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import yj.sansui.bean.entity.UserEntity;
 import yj.sansui.exception.CommonException;
 import yj.sansui.exception.ExceptionCode;
-import yj.sansui.mapper.UserMapper;
+import yj.sansui.mapper.ShopUserMapper;
 import yj.sansui.result.Result;
-import yj.sansui.service.UserService;
+import yj.sansui.service.ShopUserService;
 import yj.sansui.version1.RedisConstant;
 import yj.sansui.version1.RedisUtil;
 
@@ -20,10 +20,10 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> implements UserService {
+public class ShopUserServiceImpl extends ServiceImpl<ShopUserMapper, UserEntity> implements ShopUserService {
 
     @Resource
-    private UserServiceImpl userService;
+    private ShopUserServiceImpl userService;
 
     /**
      * selectById，输入id，获取该id的UserEntity
@@ -135,7 +135,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         List users=(List) RedisUtil.getByKey(RedisConstant.All_User_Key);
         if(users==null){
             //同步锁，确认没有线程修改
-            synchronized (UserMapper.class){
+            synchronized (ShopUserMapper.class){
                 //二次查询确认
                 users=(List) RedisUtil.getByKey(RedisConstant.All_User_Key);
                 if(users==null){

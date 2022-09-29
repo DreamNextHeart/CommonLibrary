@@ -9,5 +9,5 @@ import yj.sansui.bean.entity.UserEntity;
  * @author sansui
  */
 @Mapper
-public interface UserMapper extends BaseMapper<UserEntity>{
+public interface ShopUserMapper extends BaseMapper<UserEntity>{
 }

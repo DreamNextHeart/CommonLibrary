@@ -12,7 +12,7 @@ import java.util.List;
  * UserService，定义User业务方法逻辑的方法接口
  * @author Sansui
  */
-public interface UserService  extends IService<UserEntity> {
+public interface ShopUserService extends IService<UserEntity> {
     /**
      * selectById，输入id，查找userEntity
      * @param id Integer

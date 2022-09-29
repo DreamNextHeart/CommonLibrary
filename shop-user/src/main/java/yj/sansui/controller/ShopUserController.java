@@ -12,7 +12,7 @@ import yj.sansui.exception.CommonException;
 import yj.sansui.exception.ExceptionCode;
 import yj.sansui.pack.NotControllerResponse;
 import yj.sansui.result.Result;
-import yj.sansui.service.impl.UserServiceImpl;
+import yj.sansui.service.impl.ShopUserServiceImpl;
 import yj.sansui.version1.RedisUtil;
 
 import javax.annotation.Resource;
@@ -26,10 +26,10 @@ import java.util.List;
  */
 @CrossOrigin
 @RestController
-public class UserController {
+public class ShopUserController {
 
     @Resource
-    private UserServiceImpl userService;
+    private ShopUserServiceImpl userService;
 
     @Resource
     private RedisTemplate<String,Object> redisTemplate;

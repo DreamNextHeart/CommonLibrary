@@ -113,7 +113,6 @@ export default {
   created() {
     this.getCookieRemember();
     this.getCodeImg();
-    console.log(this.TempForm.remember)
   },
   methods: {
     getCodeImg() {
