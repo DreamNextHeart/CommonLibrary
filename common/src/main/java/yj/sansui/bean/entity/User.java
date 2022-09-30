@@ -42,7 +42,7 @@ public class User {
     @Size(min = 11,max = 11,message = "请输入11位手机号码")
     private String phone;
 
-
+    @NotNull(message = "邮箱不允许为空")
     private String email;
 
     @NotNull(message = "密码不允许为空")
