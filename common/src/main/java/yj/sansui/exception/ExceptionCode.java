@@ -31,7 +31,11 @@ public enum ExceptionCode implements StatusCode {
     CODE_EXCEPTION(310,"验证码错误"),
     USERNAME_EXCEPTION(311,"用户名或密码错误"),
     TOKEN_OUT_OF_DATE(312,"token已过期"),
-    REGISTER_ERROR(313,"注册失败，请联系管理员");
+    PHONE_EXIST(313,"手机号码已被注册"),
+    SEND_MAIL_ERROR(314,"邮件发送失败"),
+    ACTIVE_CODE_INEXISTENCE(315,"激活码不存在"),
+    RESPONSE_PACK_ERROR(316,"response结果封装错误"),
+    ACCOUNT_UN_ACTIVE(317,"账号未激活");
 
 
     /**

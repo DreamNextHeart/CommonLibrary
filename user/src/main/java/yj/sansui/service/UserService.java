@@ -24,7 +24,7 @@ public interface UserService extends IService<User> {
      * @param userDTO
      * @return
      */
-    Result loginInRemember(UserDTO userDTO);
+    Map<String, Object> loginInRemember(UserDTO userDTO);
 
     /**
      * register，注册服务
@@ -32,6 +32,13 @@ public interface UserService extends IService<User> {
      * @return
      */
     Result register(UserDTO userDTO);
+
+    /**
+     * active，激活服务
+     * @param code 激活码
+     * @return
+     */
+    Result active(String code);
 
 
 

@@ -17,8 +17,7 @@ public enum ResultCode implements StatusCode{
      */
     SUCCESS(200,"请求成功"),
     FAILED(201,"请求失败"),
-    VALIDATE_ERROR(202,"参数校验错误"),
-    RESPONSE_PACK_ERROR(203,"response结果封装错误");
+    VALIDATE_ERROR(202,"参数校验错误");
 
     /**
      * code，状态码

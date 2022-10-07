@@ -9,13 +9,6 @@ export function getCodeImg () {
   })
 }
 
-// 获取验证码
-export function checkCode (code) {
-  return request({
-    url: '/checkCode/' + code,
-    method: 'get',
-  })
-}
 
 // 登录不记住密码
 export function loginInNotRemember (loginForm) {
@@ -32,6 +25,13 @@ export function loginInRemember (loginForm) {
     url: '/loginInRemember',
     method: 'post',
     params: loginForm
+  })
+}
+
+export function fetchPermission(){
+  return request({
+    url: '/getPermission',
+    method: 'get'
   })
 }
 

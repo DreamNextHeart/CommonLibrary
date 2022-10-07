@@ -29,3 +29,7 @@ export function clearCookie () {
     Cookies.remove('remember')
 }
 
+export function getMessage (tempForm) {
+  tempForm.message = Cookies.get('message')
+}
+

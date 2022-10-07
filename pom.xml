@@ -13,7 +13,6 @@
         <module>jwt</module>
         <module>redis</module>
         <module>user</module>
-        <module>vue</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -38,8 +37,7 @@
         <logback.version>1.2.3</logback.version>
         <fastjson.version>1.2.56</fastjson.version>
         <jackson.version>2.9.6</jackson.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <mail.version>1.6.2</mail.version>
     </properties>
 
     <dependencyManagement>
@@ -136,6 +134,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${springboot.version}</version>
+            </dependency>
+            <!--javaMail-->
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${mail.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

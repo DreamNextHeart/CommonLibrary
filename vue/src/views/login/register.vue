@@ -57,6 +57,21 @@
         </el-input>
       </el-form-item>
 
+      <!--  验证码-->
+      <el-form-item prop="code" v-if="captchaEnabled">
+        <el-input
+          v-model="registerForm.code"
+          auto-complete="off"
+          placeholder="验证码"
+          style="width: 63%"
+          @keyup.enter.native="handleLogin"
+        >
+        </el-input>
+        <div class="register-code">
+          <img :src="codeUrl" @click="getCodeImg" class="login-code-img"/>
+        </div>
+      </el-form-item>
+
       <!--  注册按钮-->
       <el-form-item style="width:100%;">
         <el-button
@@ -83,7 +98,8 @@
 </template>
 
 <script>
-import {register} from "@/api/register";
+import {registerApi} from "@/api/registerApi";
+import {getCodeImg} from "@/api/loginApi";
 
 export default {
   name: "register",
@@ -91,7 +107,7 @@ export default {
     //currentPWDCheck该回调函数是为了检验确认密码和密码是否一致
     const currentPWDCheck = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'));
+        callback(new Error('请输入密码'));
       } else if (value !== this.registerForm.password) {
         callback(new Error('两次输入密码不一致!'));
       } else {
@@ -110,7 +126,8 @@ export default {
         uuid: ''
       },
       loading: false,
-      //注册开关
+      captchaEnabled: true,
+      //登录开关
       login: true,
       loginRules: {
         username: [
@@ -141,18 +158,33 @@ export default {
 
   },
   created() {
+    this.getCodeImg();
   },
   methods:{
+    getCodeImg() {
+      getCodeImg().then(res => {
+        console.log(res);
+        try {
+          this.codeUrl = window.URL.createObjectURL(res.data);
+        } catch (error) {
+          this.codeUrl = window.URL.createObjectURL(res.data);
+        }
+      });
+    },
     handleRegister(){
       this.$refs.registerForm.validate(valid => {
         if(valid===false){
           this.$message.error('请按照提示输入');
         }else {
-          register(this.registerForm).then(res=>{
+          registerApi(this.registerForm).then(res=>{
+            console.log(res);
             if(res.data.code===200){
               this.$message.success('注册成功，请到邮箱激活账号');
-            }else {
-              this.$message.error('注册失败，请重新注册，若存在多次注册失败请联系管理员');
+            }else if(res.data.code===313){
+              this.$message.error('该手机号已被注册');
+              this.getCodeImg();
+            }else if(res.data.code===310){
+              this.$message.error('验证码错误');
             }
           })
         }
@@ -162,7 +194,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style  lang="scss">
 
 .register {
   display: flex;
@@ -171,7 +203,7 @@ export default {
   //居中对齐
   align-items: center;
   height: 1080px;
-  background-image: url("../assets/img/backgro.jpg");
+  background-image: url("~@/assets/img/background.jpg");
   //背景图片尺寸，conver为扩展图片填满元素(保持像素的长宽比)
   background-size: cover;
 }

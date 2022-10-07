@@ -14,4 +14,5 @@ public class UserDTO {
     private String password;
     private String code;
     private String token;
+    private String activeCode;
 }

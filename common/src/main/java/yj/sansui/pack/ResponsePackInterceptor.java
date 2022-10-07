@@ -10,6 +10,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import yj.sansui.exception.CommonException;
+import yj.sansui.exception.ExceptionCode;
 import yj.sansui.result.Result;
 import yj.sansui.result.ResultCode;
 
@@ -61,7 +62,7 @@ public class ResponsePackInterceptor implements ResponseBodyAdvice<Object> {
                 // 将数据封装在Result里后转换为json串进行返回
                 return objectMapper.writeValueAsString(new Result(data));
             } catch (JsonProcessingException e) {
-                throw new CommonException( ResultCode.RESPONSE_PACK_ERROR, e.getMessage());
+                throw new CommonException(ExceptionCode.RESPONSE_PACK_ERROR, e.getMessage());
             }
         }
         // 否则直接封装成Result返回

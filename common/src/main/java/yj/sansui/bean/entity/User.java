@@ -2,6 +2,7 @@ package yj.sansui.bean.entity;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -30,19 +31,19 @@ public class User {
      * phone 手机号码
      * password 密码
      * salt 盐值
-     * role 角色
-     * department 部门
+     * activeCode 激活码
+     * active 1为激活，0为未激活
      */
-    @TableId(value ="id",type= IdType.AUTO)
-    private Integer id;
+    @TableId(value ="user_id",type= IdType.AUTO)
+    private Integer userId;
 
     @NotNull(message = "用户名不允许为空")
-    private String username;
+    private String userName;
 
     @Size(min = 11,max = 11,message = "请输入11位手机号码")
     private String phone;
 
-
+    @NotNull(message = "邮箱不允许为空")
     private String email;
 
     @NotNull(message = "密码不允许为空")
@@ -50,9 +51,8 @@ public class User {
 
     private String salt;
 
-    @NotNull(message = "角色不允许为空")
-    private String role;
 
-    @NotNull(message = "部门不允许为空")
-    private String department;
+    private String activeCode;
+
+    private char active;
 }

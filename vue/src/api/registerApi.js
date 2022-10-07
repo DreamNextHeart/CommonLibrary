@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-export function register(registerForm){
+export function registerApi(registerForm){
   return request({
     url: '/register',
     method: 'post',

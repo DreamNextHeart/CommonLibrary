@@ -26,7 +26,7 @@
       </el-form-item>
 
       <!--  验证码-->
-      <el-form-item prop="code" v-if="captchaEnabled">
+      <el-form-item prop="code" v-if="tempForm.captchaEnabled">
         <el-input
           v-model="loginForm.code"
           auto-complete="off"
@@ -47,16 +47,16 @@
       <!--  登录、注册按钮-->
       <el-form-item style="width:100%;">
         <el-button
-          :loading="loading"
+          :loading="tempForm.loading"
           size="medium"
           type="primary"
           style="width:100%;"
           @click.native.prevent="handleLogin"
         >
-          <span v-if="!loading">登 录</span>
+          <span v-if="!tempForm.loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
-        <div style="float: right;" v-if="register">
+        <div style="float: right;" v-if="tempForm.register">
           <router-link class="link-type" :to="'/register'">没有账号？立即注册</router-link>
         </div>
       </el-form-item>
@@ -70,9 +70,11 @@
 </template>
 
 <script>
-import {checkCode, getCodeImg, loginIn, loginInNotRemember, loginInRemember} from '@/api/login'
-import {clearCookie, getCookie, getCookieRemember, setCookie} from '@/assets/login/js/cookie'
+import {getCodeImg, loginInNotRemember, loginInRemember} from '@/api/loginApi'
+import {clearCookie, getCookie, getCookieRemember, getMessage, setCookie} from '@/assets/login/js/cookie'
 import {getRandomPassword} from "@/assets/login/js/password";
+
+import Cookies from 'js-cookie'
 
 
 export default {
@@ -89,8 +91,15 @@ export default {
         token: '',
         uuid: ''
       },
-      TempForm: {
-        remember: false
+      tempForm: {
+        remember: false,
+        loading: false,
+        //验证码开关
+        captchaEnabled: true,
+        //注册开关
+        register: true,
+        //信息
+        message: ''
       },
       loginRules: {
         phone: [
@@ -103,21 +112,23 @@ export default {
             required: true, message: "密码6~20位，并且字母、数字和标点符号至少包含两种", trigger: "blur"}
         ]
       },
-      loading: false,
-      //验证码开关
-      captchaEnabled: true,
-      //注册开关
-      register: true
     }
   },
   created() {
+    this.getMessage();
     this.getCookieRemember();
     this.getCodeImg();
   },
   methods: {
+    getMessage(){
+      getMessage(this.tempForm);
+      if(this.tempForm.message!==undefined){
+        this.$message.success(this.tempForm.message);
+      }
+      Cookies.remove("message")
+    },
     getCodeImg() {
       getCodeImg().then(res => {
-        console.log(res);
         try {
           this.codeUrl = window.URL.createObjectURL(res.data);
         } catch (error) {
@@ -126,22 +137,12 @@ export default {
       });
     },
     getCookieRemember() {
-      getCookieRemember(this.TempForm);
-      if (this.TempForm.remember === true) {
+      getCookieRemember(this.tempForm);
+      if (this.tempForm.remember === true) {
         this.getCookie();
         this.loginForm.password = getRandomPassword(10);
-        this.captchaEnabled = false;
+        this.tempForm.captchaEnabled = false;
       }
-    },
-    checkCode() {
-      const code = this.loginForm.code;
-      checkCode(code).then(res => {
-        if (res.data.code !== 200) {
-          this.$message.error('验证码错误');
-        } else {
-          this.clearCookie();
-        }
-      })
     },
     getCookie() {
       getCookie(this.loginForm);
@@ -153,53 +154,52 @@ export default {
       clearCookie();
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true;
-          if (this.TempForm.remember === false) {
-            loginInNotRemember(this.loginForm).then(res => {
-              if (res.data.code === 310) {
-                this.$message.error('验证码错误');
-                this.loginForm.code = '';
-                this.getCodeImg();
-              } else if (res.data.code === 311) {
-                this.$message.error('用户名或密码错误');
-                this.loginForm.code = '';
-                this.loginForm.password = '';
-                this.getCodeImg();
-              } else if (res.data.code === 200) {
-                this.$message.success('登陆成功，正在跳转');
-                this.loginForm.token = res.data.data.token;
-                this.setCookie();
-              }
-            });
-          } else {
-            loginInRemember(this.loginForm).then(res => {
-              if (res.data.code === 200) {
-                this.$message.success('登陆成功，正在跳转');
-              } else {
-                this.$message.error('用户信息已过期，请重新登录');
-                this.loginForm.code = '';
-                this.loginForm.username = '';
-                this.loginForm.password = '';
-                this.loginForm.remember = false;
-                this.TempForm.remember = false;
-                this.captchaEnabled = true;
-                this.clearCookie();
-                this.getCodeImg();
-              }
-            })
+      this.tempForm.loading = true;
+      if (this.tempForm.remember === false) {
+        loginInNotRemember(this.loginForm).then(res => {
+          console.log(res.data);
+          if (res.data.code === 310) {
+            this.$message.error('验证码错误');
+            this.loginForm.code = '';
+            this.getCodeImg();
+          } else if (res.data.code === 311) {
+            this.$message.error('用户名或密码错误');
+            this.loginForm.code = '';
+            this.getCodeImg();
+          } else if(res.data.code === 317){
+            this.$message.error('账号未激活，请到邮箱处激活');
+          } else if (res.data.code === 200) {
+            this.$message.success('登陆成功，正在跳转');
+            this.loginForm.token = res.data.data.token;
+            this.setCookie();
           }
-          this.loading = false;
-        }
-      });
+        });
+      }else {
+        loginInRemember(this.loginForm).then(res => {
+          console.log(res.data);
+          if (res.data.code === 200) {
+            this.$message.success('登陆成功，正在跳转');
+          } else {
+            this.$message.error('用户信息已过期，请重新登录');
+            this.loginForm.code = '';
+            this.loginForm.username = '';
+            this.loginForm.password = '';
+            this.loginForm.remember = false;
+            this.tempForm.remember = false;
+            this.tempForm.captchaEnabled = true;
+            this.clearCookie();
+            this.getCodeImg();
+          }
+        })
+      }
+      this.tempForm.loading = false;
     }
   }
 }
 
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style lang="scss">
 
 .login {
   display: flex;
@@ -208,7 +208,7 @@ export default {
   //居中对齐
   align-items: center;
   height: 1080px;
-  background-image: url("../assets/img/backgro.jpg");
+  background-image: url("~@/assets/img/background.jpg");
   //背景图片尺寸，conver为扩展图片填满元素(保持像素的长宽比)
   background-size: cover;
 }
