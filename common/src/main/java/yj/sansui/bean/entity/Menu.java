@@ -11,17 +11,16 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 
 /**
- * Menu,菜单对象，用于生成前端路由菜单导航栏
- * @author sansui
+ * @author zpli
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName(value = "menu")
+@TableName("menu")
 public class Menu {
     /**
-     * menuId：菜单id，唯一标识
+     * menuId：菜单id
      * menuName：菜单名
      * parentId：父级菜单id
      * perms：权限
@@ -32,7 +31,7 @@ public class Menu {
     @NotNull(message = "菜单名不允许为空")
     private String menuName;
 
-    @NotNull(message = "父级菜单id不允许为空")
+    @NotNull(message = "父菜单id不允许为空")
     private Integer parentId;
 
     @NotNull(message = "权限不允许为空")

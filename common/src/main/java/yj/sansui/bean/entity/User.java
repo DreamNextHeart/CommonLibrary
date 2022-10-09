@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * User，用户实体类
@@ -26,7 +27,7 @@ import javax.validation.constraints.Size;
 @TableName("user")
 public class User {
     /**
-     * id 用户序号
+     * userId 用户序号
      * username 用户名
      * phone 手机号码
      * password 密码
@@ -55,4 +56,6 @@ public class User {
     private String activeCode;
 
     private char active;
+
+    private List<Role> roles;
 }

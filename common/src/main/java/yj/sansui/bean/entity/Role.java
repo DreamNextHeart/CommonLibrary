@@ -24,6 +24,7 @@ public class Role {
      */
     @TableId(value = "role_id",type = IdType.AUTO)
     private Integer roleId;
+
     @NotNull(message = "角色名不允许为空")
     private String roleName;
 }

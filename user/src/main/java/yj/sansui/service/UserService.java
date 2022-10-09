@@ -3,6 +3,7 @@ package yj.sansui.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import yj.sansui.bean.dto.UserDTO;
+import yj.sansui.bean.entity.Role;
 import yj.sansui.bean.entity.User;
 import yj.sansui.result.Result;
 
@@ -39,6 +40,7 @@ public interface UserService extends IService<User> {
      * @return
      */
     Result active(String code);
+
 
 
 
