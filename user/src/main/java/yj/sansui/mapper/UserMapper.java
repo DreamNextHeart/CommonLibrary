@@ -12,12 +12,5 @@ import java.util.List;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     @Select("select * from user where user.user_id = #{id}")
-    @Results(
-            @Result(
-                    property = "roles", column = "id",
-                    javaType = List.class,
-                    many = @Many(select = "yj.sansui.mapper.RoleMapper.returnRole")
-            )
-    )
-    User selectUserAndRole(@Param("id") Integer id);
+    User getUser(@Param("id") Integer id);
 }
