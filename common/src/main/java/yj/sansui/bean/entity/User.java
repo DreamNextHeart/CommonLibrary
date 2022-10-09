@@ -57,5 +57,6 @@ public class User {
 
     private char active;
 
+    @TableField(exist = false)
     private List<Role> roles;
 }
