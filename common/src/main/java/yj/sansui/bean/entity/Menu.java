@@ -1,6 +1,7 @@
 package yj.sansui.bean.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author zpli
@@ -24,6 +27,7 @@ public class Menu {
      * menuName：菜单名
      * parentId：父级菜单id
      * perms：权限
+     * childrenList: 树状菜单导航栏
      */
     @TableId(value = "menu_id",type = IdType.AUTO)
     private Integer menuId;
@@ -36,4 +40,8 @@ public class Menu {
 
     @NotNull(message = "权限不允许为空")
     private String perms;
+
+
+    @TableField(exist = false)
+    private Set<Menu> childrenList = new HashSet<>();
 }
