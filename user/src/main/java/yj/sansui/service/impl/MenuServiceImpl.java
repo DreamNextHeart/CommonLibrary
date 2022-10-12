@@ -30,14 +30,14 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public List<Menu> getMenuTree(Integer id){
         User user=userMapper.getUser(id);
-        Role role=roleMapper.returnRole(user.getUserId());
-        List<Menu> menuList=menuMapper.returnMenu(role.getRoleId());
-        List<Menu> topMenuList=menuList.stream().filter(
-                s->s.getParentId().equals(0)).collect(Collectors.toList());
-        for (Menu menu : topMenuList) {
-            getChildren(menu, menuList);
-        }
-        return topMenuList;
+        List<Role> roles=roleMapper.returnRole(user.getUserId());
+//        List<Menu> menuList=menuMapper.returnMenu(roles.getRoleId());
+//        List<Menu> topMenuList=menuList.stream().filter(
+//                s->s.getParentId().equals(0)).collect(Collectors.toList());
+//        for (Menu menu : topMenuList) {
+//            getChildren(menu, menuList);
+//        }
+        return null;
     }
 
     /**

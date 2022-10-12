@@ -163,7 +163,6 @@ export default {
   methods:{
     getCodeImg() {
       getCodeImg().then(res => {
-        console.log(res);
         try {
           this.codeUrl = window.URL.createObjectURL(res.data);
         } catch (error) {
@@ -177,7 +176,6 @@ export default {
           this.$message.error('请按照提示输入');
         }else {
           registerApi(this.registerForm).then(res=>{
-            console.log(res);
             if(res.data.code===200){
               this.$message.success('注册成功，请到邮箱激活账号');
             }else if(res.data.code===313){

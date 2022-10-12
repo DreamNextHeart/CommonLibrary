@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <router-view></router-view>
   </div>
 </template>
@@ -13,6 +13,6 @@ export default {
 
 <style>
 body{
-  margin: 0;
+margin: 0;
 }
 </style>

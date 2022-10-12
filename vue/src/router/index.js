@@ -1,69 +1,34 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Layout from  '@/views/home'
-import Home from "@/views/home"
-import NotFound from "@/views/errorPage/404"
-import Forbidden from "@/views/errorPage/403"
+import { createRouter, createWebHistory } from 'vue-router'
+import page1 from "@/pages/page1";
+import page2 from "@/pages/page2";
+import Login from "@/views/login/login"
 
 
-
-Vue.use(VueRouter)
-
-//无需筛选权限的路由
 const routes = [
   {
+    path: '/',
+    name: 'page1',
+    component: page1
+  },
+  {
+    path: '/page1',
+    name: 'page1',
+    component: page1
+  },
+  {
+    path: '/page2',
+    name: 'page2',
+    component: page2
+  },
+  {
     path: '/login',
-    component: () => import('@/views/login/login')
-  },
-  {
-    path: '/register',
-    component: ()=>import('@/views/login/register')
+    name: 'Login',
+    component: Login
   }
 ]
 
-/**
- * 根据用户的权限不同，所能看到的页面和可操作性也不同
- * super_admin->上帝权限
- * admin->管理员权限
- * user->用户权限
- *
- * @type {[{}]}
- */
-export const DynamicRoutes=[
-  {
-    path: "",
-    component: Layout,
-    name:'container',
-    redirect:"home",
-    meta: {
-      requiresAuth: true,
-      name:"首页"
-    },
-    children:[
-      {
-        path:"home",
-        component:Home,
-        name:"home",
-        meta:{
-          // 匹配规则
-          name:"首页",
-          icon:"icon-name"
-        }
-      }
-    ]
-  },
-  {
-    path:"/403",
-    component:Forbidden
-  },
-  {
-    path:"*",
-    component:NotFound
-  }
-]
-
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 

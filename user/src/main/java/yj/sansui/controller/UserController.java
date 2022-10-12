@@ -3,6 +3,7 @@ package yj.sansui.controller;
 import cn.dev33.satoken.stp.StpUtil;
 import org.springframework.web.bind.annotation.*;
 import yj.sansui.bean.dto.UserDTO;
+import yj.sansui.bean.entity.User;
 import yj.sansui.constant.Constant;
 import yj.sansui.result.Result;
 import yj.sansui.service.UserService;
@@ -58,6 +59,12 @@ public class UserController {
         }else {
             response.sendRedirect("");
         }
+    }
+
+    @GetMapping("/getUserInfo")
+    public User getUserInfo(String token){
+
+        return userService.getUserInfo(token);
     }
 
 }

@@ -59,4 +59,7 @@ public class User {
 
     @TableField(exist = false)
     private List<Role> roles;
+
+    @TableField(exist = false)
+    private List perms;
 }

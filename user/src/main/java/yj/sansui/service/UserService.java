@@ -41,7 +41,12 @@ public interface UserService extends IService<User> {
      */
     Result active(String code);
 
-
+    /**
+     * getUserInfo，根据token获取用户信息
+     * @param token
+     * @return User对象
+     */
+    User getUserInfo(String token);
 
 
 }

@@ -1,14 +1,15 @@
-import Vue from 'vue'
+import axios from 'axios'
+import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import './plugins/element.js'
-import "./router/permission"
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
-Vue.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+createApp(App)
+    .use(store)
+    .use(router)
+    .use(ElementPlus)
+    .use("axios",axios)
+    .mount('#app')

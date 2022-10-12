@@ -1,17 +1,21 @@
 package yj.sansui.service.impl;
 
 
+import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import yj.sansui.bean.dto.UserDTO;
+import yj.sansui.bean.entity.Role;
 import yj.sansui.bean.entity.User;
 import yj.sansui.config.ServerConfig;
 import yj.sansui.constant.Constant;
 import yj.sansui.exception.CommonException;
 import yj.sansui.exception.ExceptionCode;
+import yj.sansui.mapper.MenuMapper;
+import yj.sansui.mapper.RoleMapper;
 import yj.sansui.mapper.UserMapper;
 import yj.sansui.result.Result;
 import yj.sansui.result.ResultCode;
@@ -24,10 +28,7 @@ import yj.sansui.version2.RedisConstant;
 import yj.sansui.version2.RedisUtil;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * UserServiceImpl，服务类
@@ -38,6 +39,11 @@ import java.util.UUID;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Resource
     UserService userService;
+
+    @Resource
+    RoleMapper roleMapper;
+    @Resource
+    MenuMapper menuMapper;
 
     /**
      * loginIn，登录方法
@@ -186,6 +192,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userService.updateById(user);
             return new Result(200,"激活成功");
         }
+    }
+
+    /**
+     * getUserInfo，根据token获取用户信息
+     *
+     * @param token
+     * @return User对象
+     */
+    @Override
+    public User getUserInfo(String token) {
+        String phone=(String) StpUtil.getLoginIdByToken(token);
+        QueryWrapper<User> wrapper=new QueryWrapper();
+        wrapper.eq("phone",phone);
+        User user=userService.getOne(wrapper);
+        List<Role> roles=roleMapper.returnRole(user.getUserId());
+        user.setRoles(roles);
+        return user;
     }
 
 

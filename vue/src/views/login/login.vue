@@ -157,7 +157,6 @@ export default {
       this.tempForm.loading = true;
       if (this.tempForm.remember === false) {
         loginInNotRemember(this.loginForm).then(res => {
-          console.log(res.data);
           if (res.data.code === 310) {
             this.$message.error('验证码错误');
             this.loginForm.code = '';
@@ -176,7 +175,6 @@ export default {
         });
       }else {
         loginInRemember(this.loginForm).then(res => {
-          console.log(res.data);
           if (res.data.code === 200) {
             this.$message.success('登陆成功，正在跳转');
           } else {

@@ -15,7 +15,6 @@ export function getCookie (loginForm) {
   loginForm.phone = Cookies.get('phone')
   loginForm.token = Cookies.get('token')
   loginForm.remember=Boolean(Cookies.get('remember'))
-  console.log(loginForm.remember)
 }
 
 
