@@ -16,6 +16,9 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author sansui
+ */
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
     @Resource
@@ -31,13 +34,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public List<Menu> getMenuTree(Integer id){
         User user=userMapper.getUser(id);
         List<Role> roles=roleMapper.returnRole(user.getUserId());
-//        List<Menu> menuList=menuMapper.returnMenu(roles.getRoleId());
-//        List<Menu> topMenuList=menuList.stream().filter(
-//                s->s.getParentId().equals(0)).collect(Collectors.toList());
-//        for (Menu menu : topMenuList) {
-//            getChildren(menu, menuList);
-//        }
-        return null;
+        List<Menu> topMenuList=null;
+        for (Role role : roles) {
+            List<Menu> menuList = menuMapper.returnMenu(role.getRoleId());
+            topMenuList=menuList.stream().filter(
+                    s->s.getParentId().equals(0)).collect(Collectors.toList());
+            for (Menu menu : topMenuList) {
+                getChildren(menu, menuList);
+            }
+        }
+        return topMenuList;
     }
 
     /**
