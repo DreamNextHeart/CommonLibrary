@@ -34,11 +34,14 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public List<Menu> getMenuTree(Integer id){
         User user=userMapper.getUser(id);
         List<Role> roles=roleMapper.returnRole(user.getUserId());
-        List<Menu> topMenuList=null;
+        List<Menu> topMenuList = null;
         for (Role role : roles) {
             List<Menu> menuList = menuMapper.returnMenu(role.getRoleId());
-            topMenuList=menuList.stream().filter(
+            List<Menu> tempList=menuList.stream().filter(
                     s->s.getParentId().equals(0)).collect(Collectors.toList());
+            topMenuList.addAll(tempList);
+//            topMenuList=menuList.stream().filter(
+//                    s->s.getParentId().equals(0)).collect(Collectors.toList());
             for (Menu menu : topMenuList) {
                 getChildren(menu, menuList);
             }
