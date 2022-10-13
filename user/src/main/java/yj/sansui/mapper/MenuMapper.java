@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import yj.sansui.bean.entity.Menu;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author zpli
@@ -14,5 +15,5 @@ import java.util.List;
 @Mapper
 public interface MenuMapper extends BaseMapper<Menu> {
     @Select("select menu.* from role_menu,menu where role_menu.role_id = #{role_id} and menu.menu_id = role_menu.menu_id")
-    List<Menu> returnMenu(@Param("role_id") Integer id);
+    Set<Menu> returnMenu(@Param("role_id") Integer id);
 }

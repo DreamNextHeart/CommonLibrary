@@ -4,22 +4,23 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import yj.sansui.bean.entity.Menu;
 
 import java.util.List;
+import java.util.Set;
 
 public interface MenuService extends IService<Menu> {
     /**
      * getChildrenList 获取子菜单
      * @param menu 菜单
-     * @param menuList 菜单列表
+     * @param menuSet 菜单列表
      * @return Menu
      */
-    Menu getChildren(Menu menu, List<Menu> menuList);
+    Menu getChildren(Menu menu, Set<Menu> menuSet);
 
     /**
      * getMenuTree
      * @param id
      * @return
      */
-    List<Menu> getMenuTree(Integer id);
+    Set<Menu> getMenuTree(Integer id);
 
 
 }

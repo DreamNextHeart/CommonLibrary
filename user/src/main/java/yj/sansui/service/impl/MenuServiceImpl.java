@@ -13,7 +13,10 @@ import yj.sansui.service.MenuService;
 import yj.sansui.utils.LibraryUtil;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -31,36 +34,34 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     MenuMapper menuMapper;
 
     @Override
-    public List<Menu> getMenuTree(Integer id){
+    public Set<Menu> getMenuTree(Integer id){
         User user=userMapper.getUser(id);
         List<Role> roles=roleMapper.returnRole(user.getUserId());
-        List<Menu> topMenuList = null;
+        Set<Menu> topMenuSet=new HashSet<>();
         for (Role role : roles) {
-            List<Menu> menuList = menuMapper.returnMenu(role.getRoleId());
-            List<Menu> tempList=menuList.stream().filter(
-                    s->s.getParentId().equals(0)).collect(Collectors.toList());
-            topMenuList.addAll(tempList);
-//            topMenuList=menuList.stream().filter(
-//                    s->s.getParentId().equals(0)).collect(Collectors.toList());
-            for (Menu menu : topMenuList) {
-                getChildren(menu, menuList);
+            Set<Menu> menuSet = menuMapper.returnMenu(role.getRoleId());
+            Set<Menu> tempSet=menuSet.stream().filter(
+                    s->s.getParentId().equals(0)).collect(Collectors.toSet());
+            topMenuSet.addAll(tempSet);
+            for (Menu menu : topMenuSet) {
+                getChildren(menu, menuSet);
             }
         }
-        return topMenuList;
+        return topMenuSet;
     }
 
     /**
      * getChildrenList 获取子菜单
      *
      * @param menu     菜单
-     * @param menuList 菜单列表
+     * @param menuSet 菜单列表
      * @return Menu
      */
     @Override
-    public Menu getChildren(Menu menu, List<Menu> menuList) {
-        for(Menu menu1:menuList){
+    public Menu getChildren(Menu menu, Set<Menu> menuSet) {
+        for(Menu menu1:menuSet){
             if(LibraryUtil.equals(menu1.getParentId(),menu.getMenuId())){
-                menu.getChildrenList().add(getChildren(menu1,menuList));
+                menu.getChildrenSet().add(getChildren(menu1,menuSet));
             }
         }
         return menu;

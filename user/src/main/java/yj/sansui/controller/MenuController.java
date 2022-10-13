@@ -6,6 +6,7 @@ import yj.sansui.bean.entity.Menu;
 import yj.sansui.service.MenuService;
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class MenuController {
@@ -13,7 +14,7 @@ public class MenuController {
     MenuService menuService;
 
     @GetMapping("getMenu")
-    public List<Menu> getMenuTree(Integer id){
+    public Set<Menu> getMenuTree(Integer id){
         return menuService.getMenuTree(id);
     }
 }

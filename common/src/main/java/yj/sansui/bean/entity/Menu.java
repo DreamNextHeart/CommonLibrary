@@ -41,7 +41,6 @@ public class Menu {
     @NotNull(message = "权限不允许为空")
     private String perms;
 
-
     @TableField(exist = false)
-    private Set<Menu> childrenList = new HashSet<>();
+    private Set<Menu> childrenSet = new HashSet<>();
 }
