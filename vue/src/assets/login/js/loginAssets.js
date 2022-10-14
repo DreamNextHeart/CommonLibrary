@@ -1,4 +1,4 @@
-import {checkCode} from "@/api/loginApi";
+import {checkCode} from "@/api/user/userApi";
 
 
 export function checkCodeAssets(code){

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User，用户实体类
@@ -58,8 +59,8 @@ public class User {
     private char active;
 
     @TableField(exist = false)
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @TableField(exist = false)
-    private List perms;
+    private Set perms;
 }

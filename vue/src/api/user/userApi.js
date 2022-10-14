@@ -28,6 +28,7 @@ export function loginInRemember (loginForm) {
   })
 }
 
+//匹配权限
 export function fetchPermission(){
   return request({
     url: '/getPermission',
@@ -35,4 +36,30 @@ export function fetchPermission(){
   })
 }
 
+//获取用户信息
+export function getUserInfo(token){
+  return request({
+    url: '/getUserInfo',
+    method: 'get',
+    params: token
+  })
+}
+
+//登出
+export function logout(token){
+  return request({
+    url: '/logout',
+    method: 'get',
+    params: token
+  })
+}
+
+//注册
+export function registerApi(registerForm){
+  return request({
+    url: '/register',
+    method: 'post',
+    params: registerForm
+  })
+}
 

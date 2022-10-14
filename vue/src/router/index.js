@@ -32,4 +32,11 @@ const router = createRouter({
   routes
 })
 
+//重置路由
+export function resetRouter(){
+  const  newRouter=createRouter({
+    history: createWebHistory(process.env.BASE_URL)
+  });
+}
+
 export default router

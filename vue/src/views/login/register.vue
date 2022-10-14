@@ -98,8 +98,7 @@
 </template>
 
 <script>
-import {registerApi} from "@/api/registerApi";
-import {getCodeImg} from "@/api/loginApi";
+import {getCodeImg,registerApi} from "@/api/user/userApi";
 
 export default {
   name: "register",

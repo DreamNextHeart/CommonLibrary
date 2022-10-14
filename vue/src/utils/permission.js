@@ -1,4 +1,4 @@
-import {fetchPermission} from "@/api/loginApi";
+import {fetchPermission} from "@/api/user/userApi";
 import {recursionRouter, setDefaultRoute} from "@/utils/recursion-router";
 import dynamicRoutes from "@/router/dynamic-router";
 import router, {DynamicRoutes} from "@/router";

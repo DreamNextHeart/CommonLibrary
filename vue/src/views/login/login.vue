@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import {getCodeImg, loginInNotRemember, loginInRemember} from '@/api/loginApi'
+import {getCodeImg, loginInNotRemember, loginInRemember} from '@/api/user/userApi'
 import {clearCookie, getCookie, getCookieRemember, getMessage, setCookie} from '@/assets/login/js/cookie'
 import {getRandomPassword} from "@/assets/login/js/password";
 

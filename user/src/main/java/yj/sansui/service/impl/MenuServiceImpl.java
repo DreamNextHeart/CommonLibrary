@@ -34,18 +34,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     MenuMapper menuMapper;
 
     @Override
-    public Set<Menu> getMenuTree(Integer id){
-        User user=userMapper.getUser(id);
-        List<Role> roles=roleMapper.returnRole(user.getUserId());
-        Set<Menu> topMenuSet=new HashSet<>();
+    public Set<Menu> getMenuTree(Integer id) {
+        User user = userMapper.getUser(id);
+        List<Role> roles = roleMapper.returnRole(user.getUserId());
+        Set<Menu> menuSet = new HashSet<>();
         for (Role role : roles) {
-            Set<Menu> menuSet = menuMapper.returnMenu(role.getRoleId());
-            Set<Menu> tempSet=menuSet.stream().filter(
-                    s->s.getParentId().equals(0)).collect(Collectors.toSet());
-            topMenuSet.addAll(tempSet);
-            for (Menu menu : topMenuSet) {
-                getChildren(menu, menuSet);
-            }
+            menuSet.addAll(menuMapper.returnMenu(role.getRoleId()));
+        }
+        Set<Menu> topMenuSet = menuSet.stream().filter(
+                s -> s.getParentId().equals(0)).collect(Collectors.toSet());
+        for (Menu menu : topMenuSet) {
+            getChildren(menu, menuSet);
         }
         return topMenuSet;
     }
@@ -53,15 +52,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     /**
      * getChildrenList 获取子菜单
      *
-     * @param menu     菜单
+     * @param menu    菜单
      * @param menuSet 菜单列表
      * @return Menu
      */
     @Override
     public Menu getChildren(Menu menu, Set<Menu> menuSet) {
-        for(Menu menu1:menuSet){
-            if(LibraryUtil.equals(menu1.getParentId(),menu.getMenuId())){
-                menu.getChildrenSet().add(getChildren(menu1,menuSet));
+        for (Menu tempMenu : menuSet) {
+            if (LibraryUtil.equals(tempMenu.getParentId(), menu.getMenuId())) {
+                menu.getChildrenSet().add(getChildren(tempMenu, menuSet));
             }
         }
         return menu;
