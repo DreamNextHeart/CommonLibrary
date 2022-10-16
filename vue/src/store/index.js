@@ -1,19 +1,14 @@
-import {createStore} from 'vuex'
+import Vuex from 'vuex'
+import user from './modules/user'
+import getters from './getters'
 
-export default createStore({
-    //准备state——用于存储数据
-    state: {
+// Vue.use(Vuex)
 
-    },
-    getters: {},
-    //准备mutations——用于操作数据（state）
-    mutations: {
-    },
-    //准备actions——用于响应组件中的动作
-    actions: {
-
-    },
+const store=new Vuex.Store({
     modules: {
+        user,
 
-    }
+    },
+    getters
 })
+export default store

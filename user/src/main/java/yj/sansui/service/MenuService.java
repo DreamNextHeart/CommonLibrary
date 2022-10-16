@@ -17,10 +17,9 @@ public interface MenuService extends IService<Menu> {
 
     /**
      * getMenuTree
-     * @param id
      * @return
      */
-    Set<Menu> getMenuTree(Integer id);
+    Set<Menu> getMenuTree();
 
 
 }

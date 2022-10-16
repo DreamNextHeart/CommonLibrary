@@ -171,12 +171,14 @@ export default {
             this.$message.success('登陆成功，正在跳转');
             this.loginForm.token = res.data.data.token;
             this.setCookie();
+            this.$router.push('/page1')
           }
         });
       }else {
         loginInRemember(this.loginForm).then(res => {
           if (res.data.code === 200) {
             this.$message.success('登陆成功，正在跳转');
+            this.$router.push('/page1')
           } else {
             this.$message.error('用户信息已过期，请重新登录');
             this.loginForm.code = '';

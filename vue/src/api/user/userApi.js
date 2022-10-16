@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request, {get} from '@/utils/request'
 
 // 获取验证码
 export function getCodeImg () {
@@ -12,6 +12,11 @@ export function getCodeImg () {
 
 // 登录不记住密码
 export function loginInNotRemember (loginForm) {
+  // const data={
+  //   phone,
+  //   password,
+  //   code
+  // }
   return request({
     url: '/loginInNotRemember',
     method: 'post',
@@ -21,6 +26,10 @@ export function loginInNotRemember (loginForm) {
 
 // 登录记住密码
 export function loginInRemember (loginForm) {
+  // const data={
+  //   phone,
+  //   token
+  // }
   return request({
     url: '/loginInRemember',
     method: 'post',
@@ -41,9 +50,12 @@ export function getUserInfo(token){
   return request({
     url: '/getUserInfo',
     method: 'get',
-    params: token
+    params: {
+      token: token
+    }
   })
 }
+
 
 //登出
 export function logout(token){

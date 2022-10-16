@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * @author sansui
  */
-@CrossOrigin
+
 @RestController
 public class UserController {
     @Resource
@@ -63,7 +63,6 @@ public class UserController {
 
     @GetMapping("/getUserInfo")
     public User getUserInfo(String token){
-
         return userService.getUserInfo(token);
     }
 

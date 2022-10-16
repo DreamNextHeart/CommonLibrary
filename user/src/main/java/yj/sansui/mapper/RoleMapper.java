@@ -7,9 +7,11 @@ import org.apache.ibatis.annotations.Select;
 import yj.sansui.bean.entity.Role;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface RoleMapper extends BaseMapper<Role> {
     @Select("select role.* from user_role,role where user_role.user_id = #{user_id} and role.role_id = user_role.role_id")
-    List<Role> returnRole(@Param("user_id") Integer id);
+    Set<Role> returnRole(@Param("user_id") Integer id);
+
 }

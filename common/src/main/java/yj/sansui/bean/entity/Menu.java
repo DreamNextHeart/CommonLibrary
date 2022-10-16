@@ -38,9 +38,14 @@ public class Menu {
     @NotNull(message = "父菜单id不允许为空")
     private Integer parentId;
 
+    @NotNull(message = "组件不允许为空")
+    private String compoent;
+
     @NotNull(message = "权限不允许为空")
     private String perms;
 
     @TableField(exist = false)
     private Set<Menu> childrenSet = new HashSet<>();
+
+
 }

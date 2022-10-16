@@ -62,5 +62,5 @@ public class User {
     private Set<Role> roles;
 
     @TableField(exist = false)
-    private Set perms;
+    private Set<String> perms;
 }

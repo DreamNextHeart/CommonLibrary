@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import yj.sansui.bean.dto.UserDTO;
+import yj.sansui.bean.entity.Menu;
 import yj.sansui.bean.entity.Role;
 import yj.sansui.bean.entity.User;
 import yj.sansui.config.ServerConfig;
@@ -42,8 +43,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     RoleMapper roleMapper;
+
     @Resource
     MenuMapper menuMapper;
+
 
     /**
      * loginIn，登录方法
@@ -197,7 +200,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * getUserInfo，根据token获取用户信息
      *
-     * @param token
+     * @param token String
      * @return User对象
      */
     @Override
@@ -206,8 +209,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper<User> wrapper=new QueryWrapper();
         wrapper.eq("phone",phone);
         User user=userService.getOne(wrapper);
-        List<Role> roles=roleMapper.returnRole(user.getUserId());
+        Set<Role> roles=roleMapper.returnRole(user.getUserId());
+        Set<Menu> menu=menuMapper.returnMenu(user.getUserId());
+        Set<String> perms=new HashSet<>();
+        for (Menu tempMenu : menu) {
+            perms.add(tempMenu.getPerms());
+        }
         user.setRoles(roles);
+        user.setPerms(perms);
         return user;
     }
 
