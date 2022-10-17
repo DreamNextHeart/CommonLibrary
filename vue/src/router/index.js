@@ -3,7 +3,7 @@ import {getToken} from "@/assets/token/token";
 
 
 
-export const constantRoutes = [
+export const constantRouter = [
   {
     path: '/',
     name: 'page1',
@@ -31,13 +31,14 @@ export const constantRoutes = [
   }
 ]
 
-export const dynamicRoutes=[
+export const dynamicRouter=[
   {
     path: '/admin',
     name: 'admin',
     component:()=>import("@/views/user/admin"),
-    roles: ["admin","super_admin"],
+
     meta: {
+      roles: ["admin","super_admin"],
       title: '管理员页面'
     }
   },
@@ -45,8 +46,8 @@ export const dynamicRoutes=[
     path: '/superAdmin',
     name: 'superAdmin',
     component:()=>import("@/views/user/superAdmin"),
-    roles: ["super_admin"],
     meta: {
+      roles: ["super_admin"],
       title: '超级管理员页面'
     }
   },
@@ -54,17 +55,18 @@ export const dynamicRoutes=[
     path: '/user',
     name: 'user',
     component:()=>import("@/views/user/user"),
-    roles: ["user","admin","super_admin"],
     meta: {
+      roles: ["user","admin","super_admin"],
       title: '用户页面'
     }
-  }
+  },
+  {path: '*',redirect: '/404',hidden:true}
 ]
 
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes: constantRoutes
+  routes: constantRouter
 })
 
 

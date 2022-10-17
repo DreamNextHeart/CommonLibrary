@@ -1,8 +1,12 @@
-import {constantRoutes} from "@/router";
+import router, {constantRouter, dynamicRouter} from "@/router";
 import {getMenuTree} from "@/api/menu/menuApi";
+import user from "@/store/modules/user";
 
 const permission={
     state:{
+        router: constantRouter,
+        addRouter: [],
+
         routes: [],
         addRoutes: [],
         defaultRoutes: [],
@@ -10,13 +14,18 @@ const permission={
         sideBarRouters: []
     },
     mutations:{
+        SET_ROUTERS: (state, router) => {
+            state.addRouter = router;
+            state.router = constantRouter.concat(router);
+        },
+
         SET_ROUTES: (state, routes) => {
             state.addRoutes = routes
             //追加、合并、去重数组
-            state.routes = constantRoutes.concat(routes)
+            state.routes = constantRouter.concat(routes)
         },
         SET_DEFAULT_ROUTES: (state, routes) => {
-            state.defaultRoutes = constantRoutes.concat(routes)
+            state.defaultRoutes = constantRouter.concat(routes)
         },
         SET_TOPBAR_ROUTES: (state, routes) => {
             state.topBarRouters = routes
@@ -27,40 +36,61 @@ const permission={
     },
     actions: {
         //生成路由
-        GenerateRoutes({commit}){
+        GenerateRoutes({commit},data){
             return new Promise(resolve => {
-                //向后端请求路由数据
-                getMenuTree().then(response=>{
-                    const sdata = JSON.parse(JSON.stringify(response.data))
-                    const rdata = JSON.parse(JSON.stringify(response.data))
-                    console.log("我是sdata:")
-                    console.log(sdata,"===")
-                    console.log(rdata)
+                const {roles}=data;
+                const accessedRouters=dynamicRouter.filter(v=>{
+                    if (roles.indexOf('super_admin') >= 0) {
+                        console.log("super_admin")
+                        return true;
+                    }
+                    if (hasPermission(roles, v)) {
+                        console.log("进入hasPermission(roles, v)判断")
+                        if (v.children && v.children.length > 0) {
+                            v.children = v.children.filter(child => {
+                                if (hasPermission(roles, child)) {
+                                    return child
+                                }
+                                return false
+                            });
+                            return v
+                        }else {
+                            return v
+                        }
+                    }
+                    return false
+                });
+                commit('SET_ROUTERS',accessedRouters)
+                accessedRouters.filter(()=>{
+                    console.log("进入accessedRouters")
+                    console.log(accessedRouters)
+                    router.addRoute(accessedRouters);
+                    console.log("现在router")
+                    console.log(router.getRoutes())
                 })
+                console.log("accessedRouters")
+                console.log(accessedRouters)
+                resolve();
             })
-        },
+        }
 
     }
 }
 
-// 遍历后台传来的路由字符串，转换为组件对象
-function filterAsyncRouter(asyncRouterMap,lastRouter = false, type = false){
-    return asyncRouterMap.filter(route=>{
-        if(type&&route.children){
-
-        }
-    })
+function hasPermission(roles, route) {
+    if (route.meta && route.meta.roles) {
+        /**
+         * some的作用是检测数组中是否存在指定条件的元素;
+         * 若存在指定的元素则返回的结果是true,
+         * 若不存在指定的元素则返回的结果是false
+         */
+        return roles.some(role => route.meta.roles.indexOf(role.roleName) >= 0)
+    } else {
+        return true
+    }
 }
 
-//遍历路由，查找子路由
-function filterChildren(childrenMap,lastRouter=false){
-    const children=[]
-    childrenMap.forEach((el,index)=>{
-        if(el.children&&el.children.length){
-            // if(el.component===)
-        }
-    })
-}
+
 
 
 export default permission
