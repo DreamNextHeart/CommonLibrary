@@ -5,11 +5,6 @@ import {getToken} from "@/assets/token/token";
 
 export const constantRouter = [
   {
-    path: '/',
-    name: 'page1',
-    component: ()=>import("@/pages/page1")
-  },
-  {
     path: '/page1',
     name: 'page1',
     component: ()=>import("@/pages/page1")
@@ -25,6 +20,15 @@ export const constantRouter = [
     component: ()=>import("@/views/login/login")
   },
   {
+    path: '/',
+    name: 'index',
+    component:()=>import("@/views/test"),
+    meta: {
+      roles: ["user","admin","super_admin"],
+      title: '首页'
+    }
+  },
+  {
     path: '/register',
     name: 'register',
     component: ()=>import("@/views/login/register")
@@ -32,11 +36,11 @@ export const constantRouter = [
 ]
 
 export const dynamicRouter=[
+
   {
     path: '/admin',
     name: 'admin',
     component:()=>import("@/views/user/admin"),
-
     meta: {
       roles: ["admin","super_admin"],
       title: '管理员页面'

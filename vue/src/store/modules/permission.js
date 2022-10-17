@@ -61,17 +61,19 @@ const permission={
                     return false
                 });
                 commit('SET_ROUTERS',accessedRouters)
-                accessedRouters.filter(()=>{
+
                     console.log("进入accessedRouters")
-                    console.log(accessedRouters)
-                    router.addRoute(accessedRouters);
+                    console.log(accessedRouters.length)
+                    for(var temp=0;temp<accessedRouters.length-1;temp++){
+                        router.addRoute(accessedRouters[temp]);
+                    }
                     console.log("现在router")
                     console.log(router.getRoutes())
                 })
                 console.log("accessedRouters")
                 console.log(accessedRouters)
                 resolve();
-            })
+
         }
 
     }
