@@ -2,16 +2,18 @@
   <el-container style="height: 500px">
     <el-aside width="200px">
       <el-scrollbar>
-        <el-menu>
-          <el-sub-menu index="1">
-            <template #title>第一个导航栏</template>
-              <el-menu-item index="1-1">Option 1</el-menu-item>
-              <el-menu-item index="1-2">Option 2</el-menu-item>
-            <el-sub-menu index="1-3">
-              <template #title>Option 3</template>
-              <el-menu-item index="1-3-1">Option 3-1</el-menu-item>
+        <el-menu router>
+          <template v-for="(v,index) in $router.options.routes" :key="v.path">
+            <el-sub-menu  :index="index+ ' '" >
+              <template #title>
+                {{v.meta.title}}
+              </template>
+              <el-menu-item v-for="vitem in v.children" :key="vitem.path" >
+                  {{vitem.meta.title}}
+
+              </el-menu-item>
             </el-sub-menu>
-          </el-sub-menu>
+          </template>
         </el-menu>
       </el-scrollbar>
     </el-aside>
@@ -19,8 +21,14 @@
 </template>
 
 <script>
+import router from "@/router";
+
 export default {
-  name: "test1"
+  name: "test1",
+  created() {
+    console.log("进入首页")
+    console.log(router.getRoutes())
+  }
 }
 </script>
 

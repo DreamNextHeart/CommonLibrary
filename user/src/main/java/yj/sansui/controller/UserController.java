@@ -66,4 +66,9 @@ public class UserController {
         return userService.getUserInfo(token);
     }
 
+    @GetMapping("/")
+    public String getHealth(){
+        return "health";
+    }
+
 }

@@ -8,7 +8,6 @@
             <template #title>
               Navigator One
             </template>
-
               <el-menu-item index="1-1">Option 1</el-menu-item>
               <el-menu-item index="1-2">Option 2</el-menu-item>
 

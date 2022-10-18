@@ -6,7 +6,7 @@ import store from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import request from "@/utils/request";
-// import './permission'
+import './permission'
 
 
 

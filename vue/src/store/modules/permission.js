@@ -2,8 +2,8 @@ import router, {constantRouter, dynamicRouter} from "@/router";
 import {getMenuTree} from "@/api/menu/menuApi";
 import user from "@/store/modules/user";
 
-const permission={
-    state:{
+const permission = {
+    state: {
         router: constantRouter,
         addRouter: [],
 
@@ -13,7 +13,7 @@ const permission={
         topBarRouters: [],
         sideBarRouters: []
     },
-    mutations:{
+    mutations: {
         SET_ROUTERS: (state, router) => {
             state.addRouter = router;
             state.router = constantRouter.concat(router);
@@ -36,10 +36,10 @@ const permission={
     },
     actions: {
         //生成路由
-        GenerateRoutes({commit},data){
+        GenerateRoutes({commit}, data) {
             return new Promise(resolve => {
-                const {roles}=data;
-                const accessedRouters=dynamicRouter.filter(v=>{
+                const {roles} = data;
+                const accessedRouters = dynamicRouter.filter(v => {
                     if (roles.indexOf('super_admin') >= 0) {
                         console.log("super_admin")
                         return true;
@@ -54,25 +54,26 @@ const permission={
                                 return false
                             });
                             return v
-                        }else {
+                        } else {
                             return v
                         }
                     }
                     return false
                 });
-                commit('SET_ROUTERS',accessedRouters)
+                commit('SET_ROUTERS', accessedRouters)
 
-                    console.log("进入accessedRouters")
-                    console.log(accessedRouters.length)
-                    for(var temp=0;temp<accessedRouters.length-1;temp++){
-                        router.addRoute(accessedRouters[temp]);
-                    }
-                    console.log("现在router")
-                    console.log(router.getRoutes())
-                })
-                console.log("accessedRouters")
+                console.log("进入accessedRouters")
                 console.log(accessedRouters)
+                console.log("原先router")
+                console.log(router.getRoutes())
+                accessedRouters.forEach((temp) => {
+                    router.addRoute(temp)
+                })
+                console.log("现在router")
+                console.log(router.getRoutes())
                 resolve();
+            })
+
 
         }
 
@@ -91,8 +92,6 @@ function hasPermission(roles, route) {
         return true
     }
 }
-
-
 
 
 export default permission
