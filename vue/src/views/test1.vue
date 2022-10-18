@@ -25,8 +25,12 @@ import router from "@/router";
 
 export default {
   name: "test1",
+  data(){
+
+  },
   created() {
     console.log("进入首页")
+    console.log(router.options.routes)
     console.log(router.getRoutes())
   }
 }
