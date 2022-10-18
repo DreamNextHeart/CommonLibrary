@@ -3,7 +3,7 @@
     <el-aside width="200px">
       <el-scrollbar>
         <el-menu router>
-          <template v-for="(v,index) in finalRouter" :key="v.path">
+          <template v-for="(v,index) in finalRouter" :key="v.path" >
             <el-sub-menu  :index="index+ ' '" >
               <template #title>
                 {{v.meta.title}}
@@ -32,7 +32,7 @@ export default {
   created() {
     console.log("create")
     console.log(router.options.routes)
-    this.finalRouter=router.options.routes;
+    this.finalRouter=router.getRoutes();
     console.log("进入首页")
     console.log(router.options.routes)
     console.log(router.getRoutes())
