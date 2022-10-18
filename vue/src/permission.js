@@ -3,7 +3,9 @@ import {getToken} from "@/assets/token/token";
 import store from "@/store";
 import {isRelogin} from "@/utils/request";
 
+
 router.beforeEach((to, from, next) => {
+
     const token=getToken()
     console.log(token)
     //存在token
@@ -20,7 +22,15 @@ router.beforeEach((to, from, next) => {
                     console.log(response.data.data.roles)
                     const roles=response.data.data.roles
                     isRelogin.show = false
-                    store.dispatch('GenerateRoutes',{roles}).then(()=>{
+
+                    store.dispatch('GenerateRoutes',{roles}).then(accessedRouters=>{
+                        console.log("原router")
+                        console.log(router.options.routes)
+
+                        // accessedRouters.forEach(temp => router.addRoute(temp))
+                        router.options.routes=router.options.routes.concat(accessedRouters)
+                        console.log("现router")
+                        console.log(router.options.routes)
                         next({...to,replace: true})
                     })
                 }).catch(error=>{

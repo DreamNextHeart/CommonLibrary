@@ -45,7 +45,6 @@ const permission = {
                         return true;
                     }
                     if (hasPermission(roles, v)) {
-                        console.log("进入hasPermission(roles, v)判断")
                         if (v.children && v.children.length > 0) {
                             v.children = v.children.filter(child => {
                                 if (hasPermission(roles, child)) {
@@ -61,20 +60,10 @@ const permission = {
                     return false
                 });
                 commit('SET_ROUTERS', accessedRouters)
-
-                console.log("进入accessedRouters")
+                console.log("accessedRouters")
                 console.log(accessedRouters)
-                console.log("原先router")
-                console.log(router.getRoutes())
-                accessedRouters.forEach((temp) => {
-                    router.addRoute(temp)
-                })
-                console.log("现在router")
-                console.log(router.getRoutes())
-                resolve();
+                resolve(accessedRouters);
             })
-
-
         }
 
     }
