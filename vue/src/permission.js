@@ -27,8 +27,8 @@ router.beforeEach((to, from, next) => {
                         console.log("原router")
                         console.log(router.options.routes)
 
-                        accessedRouters.forEach(temp => router.addRoute(temp))
-                        // router.options.routes=router.options.routes.concat(accessedRouters)
+                        // accessedRouters.forEach(temp => router.addRoute(temp))
+                        router.options.routes=router.options.routes.concat(accessedRouters)
                         console.log("现router")
                         console.log(router.options.routes)
                         next({...to,replace: true})

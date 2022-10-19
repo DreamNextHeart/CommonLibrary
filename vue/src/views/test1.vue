@@ -3,17 +3,24 @@
     <el-aside width="200px">
       <el-scrollbar>
         <el-menu router>
-          <template v-for="(v,index) in finalRouter" :key="v.path" >
-            <el-sub-menu  :index="index+ ' '" >
-              <template #title>
-                {{v.meta.title}}
-              </template>
-              <el-menu-item v-for="vitem in v.children" :key="vitem.path" >
-                  {{vitem.meta.title}}
-              </el-menu-item>
-            </el-sub-menu>
-          </template>
+          <el-sub-menu v-for="(v,index) in $router.options.routes" :index="index+ ' '">
+            <template #title>{{v.name}}</template>
+            <el-menu-item v-for="vTemp in v.children" :index="vTemp.path">{{vTemp.name}}</el-menu-item>
+          </el-sub-menu>
         </el-menu>
+
+<!--        <el-menu router>-->
+<!--          <template v-for="(v,index) in $router.options.routes" :key="v.path" >-->
+<!--            <el-sub-menu  :index="index+ ' '" >{{v.name}}-->
+<!--              <template>-->
+<!--                {{v.name}}-->
+<!--              </template>-->
+<!--              <el-menu-item v-for="vitem in v.children" :key="vitem.path" >-->
+<!--                  {{vitem.meta.title}}-->
+<!--              </el-menu-item>-->
+<!--            </el-sub-menu>-->
+<!--          </template>-->
+<!--        </el-menu>-->
       </el-scrollbar>
     </el-aside>
   </el-container>
