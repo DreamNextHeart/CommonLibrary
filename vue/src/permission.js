@@ -1,4 +1,4 @@
-import router, {dynamicRouter} from "@/router";
+import router, {dynamicRouter, errorRouter} from "@/router";
 import {getToken} from "@/assets/token/token";
 import store from "@/store";
 import {isRelogin} from "@/utils/request";
@@ -24,13 +24,8 @@ router.beforeEach((to, from, next) => {
                     isRelogin.show = false
 
                     store.dispatch('GenerateRoutes',{roles}).then(accessedRouters=>{
-                        console.log("原router")
-                        console.log(router.options.routes)
-
-                        // accessedRouters.forEach(temp => router.addRoute(temp))
+                        errorRouter.forEach(temp => router.addRoute(temp))
                         router.options.routes=router.options.routes.concat(accessedRouters)
-                        console.log("现router")
-                        console.log(router.options.routes)
                         next({...to,replace: true})
                     })
                 }).catch(error=>{

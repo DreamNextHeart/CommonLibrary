@@ -1,7 +1,5 @@
 <template>
-  <div class="login">
-    <button @click="getMenuTree">a</button>
-  </div>
+我是page1
 </template>
 
 <script>

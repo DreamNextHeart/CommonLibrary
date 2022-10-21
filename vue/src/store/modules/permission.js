@@ -1,6 +1,4 @@
 import router, {constantRouter, dynamicRouter} from "@/router";
-import {getMenuTree} from "@/api/menu/menuApi";
-import user from "@/store/modules/user";
 
 const permission = {
     state: {
@@ -60,8 +58,6 @@ const permission = {
                     return false
                 });
                 commit('SET_ROUTERS', accessedRouters)
-                console.log("accessedRouters")
-                console.log(accessedRouters)
                 resolve(accessedRouters);
             })
         }
