@@ -1,11 +1,10 @@
 <template>
-我是page2
-  <router-view></router-view>
+  我是page5
 </template>
 
 <script>
 export default {
-  name: "page2"
+  name: ""
 }
 </script>
 

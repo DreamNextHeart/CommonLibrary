@@ -5,15 +5,17 @@ import {isRelogin} from "@/utils/request";
 
 
 router.beforeEach((to, from, next) => {
-
+    console.log("进入路由守卫")
     const token=getToken()
     console.log(token)
+    const excludePath = ['error']
     //存在token
-    if(token!==null){
+    if(token!==null &&excludePath.indexOf(to.name) === -1){
         if(to.path==='/login'||to.path==='/register'){
             console.log("在登陆")
             next({path: '/'})
         }else {
+            console.log("不在登录")
             // 判断当前用户是否已拉取完user_info信息
             if(store.getters.roles.length===0){
                 isRelogin.show = true
@@ -24,8 +26,12 @@ router.beforeEach((to, from, next) => {
                     isRelogin.show = false
 
                     store.dispatch('GenerateRoutes',{roles}).then(accessedRouters=>{
+                        console.log("执行")
                         errorRouter.forEach(temp => router.addRoute(temp))
-                        router.options.routes=router.options.routes.concat(accessedRouters)
+                        accessedRouters.forEach(temp=>router.addRoute(temp))
+                        let menuList=router.options.routes[0].children
+                        menuList=menuList.concat(accessedRouters[0].children)
+                        router.options.routes=menuList
                         next({...to,replace: true})
                     })
                 }).catch(error=>{
