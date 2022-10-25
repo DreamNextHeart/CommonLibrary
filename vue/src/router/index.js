@@ -7,7 +7,6 @@ export const constantRouter = [
         name: 'index',
         title: '首页',
         component: () => import("@/views/index"),
-        redirect: '/welcome',
         children: [
             {
                 path: '/page1',
@@ -73,7 +72,7 @@ export const constantRouter = [
 
 export const dynamicRouter = [
     {
-        path: '/',
+        path: '/index',
         name: 'index1',
         title: '首页1',
         component: () => import("@/views/index"),

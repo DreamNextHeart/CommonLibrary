@@ -26,12 +26,14 @@ router.beforeEach((to, from, next) => {
                     isRelogin.show = false
 
                     store.dispatch('GenerateRoutes',{roles}).then(accessedRouters=>{
-                        console.log("执行")
+                        console.log("原")
+                        console.log(router.getRoutes())
                         errorRouter.forEach(temp => router.addRoute(temp))
                         accessedRouters.forEach(temp=>router.addRoute(temp))
                         let menuList=router.options.routes[0].children
                         menuList=menuList.concat(accessedRouters[0].children)
                         router.options.routes=menuList
+                        console.log(router.options.routes)
                         next({...to,replace: true})
                     })
                 }).catch(error=>{

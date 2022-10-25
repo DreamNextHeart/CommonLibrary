@@ -27,7 +27,11 @@ export default {
     }
   },
   created() {
+    console.log(111)
     this.menuList=router.options.routes;
+    // this.menuList=router.getRoutes();
+    console.log("menuList")
+    console.log(this.menuList)
   }
 }
 </script>
